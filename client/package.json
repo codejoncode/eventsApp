@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.3.0",
     "cuid": "^2.1.1",
     "date-fns": "^1.29.0",
     "firebase": "^5.8.2",
@@ -43,5 +44,11 @@
   "devDependencies": {
     "redux-devtools-extension": "^2.13.2",
     "source-map-explorer": "^1.5.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
