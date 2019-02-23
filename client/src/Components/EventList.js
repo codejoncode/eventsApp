@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import  EventListItem from './EventListItem.js'
 
 class EventList extends Component {
-    state = {}
+  state = {};
 
-    render(){
-        return (
-            <div></div>
-        )
-    }
+  render() {
+    return (
+      <div>
+          <h1>Event List </h1>
+          <EventListItem />
+          <EventListItem />
+          <EventListItem />
+          <EventListItem />
+      </div>
+    );
+  }
 }
 
-export default EventList; 
+export default EventList;
