@@ -6,7 +6,7 @@ class EventListAttendee extends Component {
     state = {}
 
     componentDidMount() {
-        this.getRandomUser();
+        // this.getRandomUser();
     }
 
     getRandomUser = () => {
@@ -24,10 +24,12 @@ class EventListAttendee extends Component {
     }
 
     render (){
+        const {attendee} = this.props; 
+        console.log(attendee);
         // https://randomuser.me/api/portaits/women/42.jpg
         return (
             <List.Item >
-                <Image as='a' size='mini' circular src="https://randomuser.me/api/portraits/women/33.jpg"/>
+                <Image as='a' size='mini' circular src={attendee.photoURL}/>
                                                         {/* https://randomuser.me/api/portaits/women/42.jpg */}
             </List.Item>
         )
