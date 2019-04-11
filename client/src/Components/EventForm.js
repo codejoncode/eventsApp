@@ -24,6 +24,18 @@ class EventForm extends Component {
       }
     }
 
+    componentWillReceiveProps(nextProps) {
+      // console.log('current: ', this.props.selectedEvent);
+      // console.log('next: ', nextProps.selectedEvent); 
+      if (nextProps.selectedEvent !== this.props.selectedEvent){
+        this.setState({
+          event: nextProps.selectedEvent || emptyEvent //  change the event or if selectedEvent is not a thing set to the emptyEvent
+        })
+      }
+    }
+
+
+
     onFormSubmit = (evt) => {
       evt.preventDefault();
       console.log(this.state.event);
