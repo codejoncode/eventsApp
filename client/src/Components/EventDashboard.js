@@ -96,19 +96,40 @@ class EventDashboard extends Component {
     });
   }
 
-  handleEditEvent = (eventToUpdate) => () => {
+  handleUpdateEvent = (updatedEvent) => {
     this.setState({
-      selectedEvent: eventToUpdate,
+      events: this.state.events.map(event => {
+        if (event.id === updatedEvent.id){
+          return Object.assign({}, updatedEvent); //clones object copy into empty object assigned to what we are replacing it with. 
+        } else {
+          return event; 
+        }
+      }), 
+      isOpen: false, 
+      selectedEvent: null
+    })
+  }
+
+  handleOpenEvent = (eventToOpen) => () => {
+    this.setState({
+      selectedEvent: eventToOpen,
       isOpen: true,
     });
-  } 
+  }
+  
+  handleDeleteEvent = (eventId) => () => {
+    const updatedEvents = this.state.events.filter(e => e.id !== eventId); // return new array that doesn't match event we wish to delete 
+    this.setState({
+      events: updatedEvents
+    });
+  }
 
   render() {
     const {selectedEvent} = this.state; 
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList onEventEdit = {this.handleEditEvent} events={this.state.events} />
+          <EventList deleteEvent = {this.handleDeleteEvent} onEventOpen = {this.handleOpenEvent} events={this.state.events} />
         </Grid.Column>
         <Grid.Column width={6}>
           <Button
@@ -117,7 +138,7 @@ class EventDashboard extends Component {
             content="Create Event"
           />
           {/* if this.state.isOpen is true then the event form will show else it will not show */}
-          {this.state.isOpen && <EventForm selectedEvent = {selectedEvent} createEvent = {this.handleCreateEvent} handleCancel={this.handleCancel} />}
+          {this.state.isOpen && <EventForm updateEvent = {this.handleUpdateEvent} selectedEvent = {selectedEvent} createEvent = {this.handleCreateEvent} handleCancel={this.handleCancel} />}
         </Grid.Column>
       </Grid>
     );
