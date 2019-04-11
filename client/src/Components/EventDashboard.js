@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Grid, Button } from "semantic-ui-react";
+import cuid from 'cuid'; 
 import EventList from "./EventList";
 import EventForm from "./EventForm";
+import defaultPicture from "../Images/users.png";
 
 const eventsDashboard = [
   {
@@ -75,11 +77,23 @@ class EventDashboard extends Component {
       isOpen: true
     });
   };
+
   handleCancel = () => {
     this.setState({
       isOpen: false
     });
   };
+
+  handleCreateEvent = (newEvent) => {
+    newEvent.id = cuid(); //generates a random id 
+    newEvent.hostPhotoURL = defaultPicture; // default photo for when a user does not have one. 
+    const updatedEvents = [...this.state.events, newEvent]; 
+    this.setState({
+      events: updatedEvents, 
+      isOpen: false, 
+    })
+
+  }
 
   render() {
     return (
@@ -94,7 +108,7 @@ class EventDashboard extends Component {
             content="Create Event"
           />
           {/* if this.state.isOpen is true then the event form will show else it will not show */}
-          {this.state.isOpen && <EventForm handleCancel={this.handleCancel} />}
+          {this.state.isOpen && <EventForm createEvent = {this.handleCreateEvent} handleCancel={this.handleCancel} />}
         </Grid.Column>
       </Grid>
     );
