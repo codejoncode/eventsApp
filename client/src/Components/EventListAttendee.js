@@ -25,7 +25,6 @@ class EventListAttendee extends Component {
 
     render (){
         const {attendee} = this.props; 
-        console.log(attendee);
         // https://randomuser.me/api/portaits/women/42.jpg
         return (
             <List.Item >

@@ -6,7 +6,7 @@ class EventListItem extends Component {
   state = {};
 
   render() {
-      const {event} = this.props; 
+      const {event} = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -15,7 +15,7 @@ class EventListItem extends Component {
               <Item.Image
                 size="tiny"
                 circular
-                src={event.hostedPhotoURL}
+                src={event.hostPhotoURL}
               />
               <Item.Content>
                 <Item.Header as="a">{event.title}</Item.Header>

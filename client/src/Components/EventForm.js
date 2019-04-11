@@ -5,6 +5,7 @@ class EventForm extends Component {
     state = {}
 
     render(){
+        const {handleCancel} = this.props;
         return (
                   <Segment>
                     <Form>
@@ -31,7 +32,7 @@ class EventForm extends Component {
                       <Button positive type="submit">
                         Submit
                       </Button>
-                      <Button type="button">Cancel</Button>
+                      <Button onClick = {handleCancel} type="button">Cancel</Button>
                     </Form>
                   </Segment>
         )
