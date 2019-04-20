@@ -1,10 +1,22 @@
 import React from 'react' 
+import { Menu, Dropdown, Image } from 'semantic-ui-react'; 
 
-const SignedInMenu = () => {
+import logo from "../Images/user.png"
+const SignedInMenu = ({signOut}) => {
     return (
-        <div>
-            <h2>Signed In Page</h2>
-        </div>
+            <Menu.Item position="right">
+              <Image avatar spaced="right" src={logo} />
+              <Dropdown pointing="top left" text="Username">
+                <Dropdown.Menu>
+                  <Dropdown.Item text="Create Event" icon="plus" />
+                  <Dropdown.Item text="My Events" icon="calendar" />
+                  <Dropdown.Item text="My Network" icon="users" />
+                  <Dropdown.Item text="My Profile" icon="user" />
+                  <Dropdown.Item text="Settings" icon="settings" />
+                  <Dropdown.Item onClick = {signOut} text="Sign Out" icon="power" />
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Item>
     )
 }
 
