@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Menu, Button, Container } from "semantic-ui-react";
+import {NavLink, Link } from 'react-router-dom'; 
+
+
 class NavBar extends Component {
   state = {};
 
@@ -9,9 +12,10 @@ class NavBar extends Component {
         <Container>
           <Menu.Item header>
             <img src="assets/users.png" alt="logo" />
-            Re-Event
+            Re-Events
           </Menu.Item>
-          <Menu.Item name="Events" />
+          <Menu.Item as = {NavLink} to ='/events' name="Events" />
+          <Menu.Item as = {NavLink} to ='/people' name="People" />
           <Menu.Item>
             <Button floated="right" positive inverted content="Create Event" />
           </Menu.Item>

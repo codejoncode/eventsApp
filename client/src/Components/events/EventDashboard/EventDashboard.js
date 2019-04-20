@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Grid, Button } from "semantic-ui-react";
 import cuid from 'cuid'; 
-import EventList from "./EventList";
-import EventForm from "./EventForm";
-import defaultPicture from "../Images/users.png";
+import EventList from "../EventList/EventList.js";
+import EventForm from "../EventForm/EventForm.js";
+import defaultPicture from "../../../Images/users.png";
 
 const eventsDashboard = [
   {

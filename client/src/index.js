@@ -1,6 +1,7 @@
 // import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom'; 
 import 'semantic-ui-css/semantic.min.css'
 import './index.css';
 import App from './Components/App';
@@ -9,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 /*Hot modules allows for updating without the application having to refresh 
  refresh manually if you have issues but most of the time you wont' need to refresh. 
 */
-// const rootElement = document.getElementById('root')
+const rootElement = document.getElementById('root')
 
 // let render = () => {
 //     ReactDOM.render(<App />, rootElement)
@@ -23,7 +24,11 @@ import * as serviceWorker from './serviceWorker';
 // render() 
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <BrowserRouter>
+   <App />
+  </BrowserRouter>
+, rootElement);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
