@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../../Images/users.png";
 
 //stateless functional component
-const HomePage = () => {
+const HomePage = ({history}) => {
   return (
     <div>
       <div className="ui inverted vertical masthead center aligned segment">
@@ -16,7 +16,7 @@ const HomePage = () => {
             <div className="content">Re-vents</div>
           </h1>
           <h2>Do whatever you want to do</h2>
-          <div className="ui huge white inverted button">
+          <div onClick = {() => history.push('/events')} className="ui huge white inverted button">
             Get Started
             <i className="right arrow icon" />
           </div>
