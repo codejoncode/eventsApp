@@ -1,16 +1,21 @@
 // import 'bootstrap/dist/css/bootstrap.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'; 
-import 'semantic-ui-css/semantic.min.css'
-import './index.css';
-import App from './Components/App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import "semantic-ui-css/semantic.min.css";
+import "./index.css";
+import App from "./Components/App";
+import * as serviceWorker from "./serviceWorker";
+import { configureStore } from "./store/configureStore";
 
 /*Hot modules allows for updating without the application having to refresh 
  refresh manually if you have issues but most of the time you wont' need to refresh. 
 */
-const rootElement = document.getElementById('root')
+
+const store = configureStore();
+
+const rootElement = document.getElementById("root");
 
 // let render = () => {
 //     ReactDOM.render(<App />, rootElement)
@@ -21,14 +26,16 @@ const rootElement = document.getElementById('root')
 //         setTimeout(render)
 //     })
 // }
-// render() 
-
+// render()
 
 ReactDOM.render(
-  <BrowserRouter>
-   <App />
-  </BrowserRouter>
-, rootElement);
+  <Provider store = {store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  rootElement
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
