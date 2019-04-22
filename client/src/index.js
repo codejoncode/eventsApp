@@ -8,6 +8,7 @@ import "./index.css";
 import App from "./Components/App";
 import * as serviceWorker from "./serviceWorker";
 import { configureStore } from "./store/configureStore";
+import ScrollToTop from "./Components/common/util/ScrollToTop";
 
 /*Hot modules allows for updating without the application having to refresh 
  refresh manually if you have issues but most of the time you wont' need to refresh. 
@@ -31,7 +32,9 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(
   <Provider store = {store}>
     <BrowserRouter>
-      <App />
+      <ScrollToTop>
+        <App />
+      </ScrollToTop>
     </BrowserRouter>
   </Provider>,
   rootElement

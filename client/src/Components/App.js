@@ -7,7 +7,7 @@ import NavBar from "./NavBar";
 import UserDetailedPage from "./user/UserDetailed/UserDetailedPage";
 import PeopleDashboard from "./user/PeopleDashboard/PeopleDashboard";
 import SettingsDashboard from "./user/Settings/SettingsDashboard";
-import EventDetailedPage from "./user/UserDetailed/UserDetailedPage";
+import EventDetailedPage from "../Components/events/EventDetailed/EventDetailedPage";
 import HomePage from "./home/HomePage";
 import EventForm from "./events/EventForm/EventForm";
 import TestComponent from "./TestComponent";
