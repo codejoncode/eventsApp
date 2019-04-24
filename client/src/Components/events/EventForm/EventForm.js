@@ -1,44 +1,40 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'; 
 import { Segment, Form, Button } from 'semantic-ui-react';
 
 
-const emptyEvent = {
-  title: "",
-  date: "",
-  city: "", 
-  venue: "", 
-  hostedBy: "", 
+/* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
+const mapState = ( state, ownProps) => {
+  const eventId = ownProps.match.params.id; 
+
+  let event = {
+    title: "",
+    date: "",
+    city: "", 
+    venue: "", 
+    hostedBy: "", 
+  }
+
+  if (eventId && state.events.length > 0){
+    event = state.events.filter(event => event.id === eventId)[0]; // filter returns an array 
+  }
+
+  return {
+    event
+  } 
 }
 
 class EventForm extends Component {
     state = {
-      event: emptyEvent
+      event: Object.assign({}, this.props.event) // get a copy so that we don't change what's in state. 
     }
 
-    componentDidMount () {
-      //called immediately after a component is mounted. Setting state here will trigger a re-rendering. 
-      if (this.props.selectedEvent !== null ){
-        this.setState({
-          event: this.props.selectedEvent
-        });
-      }
-    }
-
-    componentWillReceiveProps(nextProps) {
-      // console.log('current: ', this.props.selectedEvent);
-      // console.log('next: ', nextProps.selectedEvent); 
-      if (nextProps.selectedEvent !== this.props.selectedEvent){
-        this.setState({
-          event: nextProps.selectedEvent || emptyEvent //  change the event or if selectedEvent is not a thing set to the emptyEvent
-        })
-      }
-    }
+    
 
 
 
     onFormSubmit = (evt) => {
       evt.preventDefault();
-      console.log(this.state.event);
       if (this.state.event.id){
         this.props.updateEvent(this.state.event);
       } else {
@@ -90,4 +86,4 @@ class EventForm extends Component {
     }
 }
 
-export default EventForm; 
+export default connect(mapState)(EventForm); 
