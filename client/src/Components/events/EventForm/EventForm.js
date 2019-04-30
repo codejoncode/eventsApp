@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'; 
+import cuid from 'cuid';
 import { Segment, Form, Button } from 'semantic-ui-react';
-
+import {createEvent, updateEvent } from '../EventList/eventActions';
+import defaultPhoto from '../../../Images/user.png';
 
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
 const mapState = ( state, ownProps) => {
@@ -24,6 +26,11 @@ const mapState = ( state, ownProps) => {
   } 
 }
 
+const actions = {
+  createEvent,
+  updateEvent,
+}
+
 class EventForm extends Component {
     state = {
       event: Object.assign({}, this.props.event) // get a copy so that we don't change what's in state. 
@@ -37,8 +44,15 @@ class EventForm extends Component {
       evt.preventDefault();
       if (this.state.event.id){
         this.props.updateEvent(this.state.event);
+        this.props.history.goBack();
       } else {
-        this.props.createEvent(this.state.event); 
+        const newEvent = {
+          ...this.state.event,
+          id: cuid(),
+          hostPhotoURL: defaultPhoto
+        }
+        this.props.createEvent(newEvent); 
+        this.props.history.push('/events')
       }
 
     }
@@ -79,11 +93,11 @@ class EventForm extends Component {
                       <Button positive type="submit">
                         Submit
                       </Button>
-                      <Button onClick = {handleCancel} type="button">Cancel</Button>
+                      <Button onClick = {this.props.history.goBack} type="button">Cancel</Button>
                     </Form>
                   </Segment>
         )
     }
 }
 
-export default connect(mapState)(EventForm); 
+export default connect(mapState, actions)(EventForm); 
