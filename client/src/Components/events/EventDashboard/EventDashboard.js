@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Grid, Button } from "semantic-ui-react";
-import cuid from "cuid";
+import { Grid } from "semantic-ui-react";
 import EventList from "../EventList/EventList.js";
-import EventForm from "../EventForm/EventForm.js";
-import defaultPicture from "../../../Images/users.png";
 import {
 
   deleteEvent,

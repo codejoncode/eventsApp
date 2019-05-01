@@ -1,6 +1,5 @@
 import React from 'react'
 import { Segment, List, Item, Label } from 'semantic-ui-react';
-import userImage from "../../../Images/user.png"
 
 const EventDetailedSidebar  = ({attendees}) => {
   const isHost = false; 
@@ -31,7 +30,8 @@ const EventDetailedSidebar  = ({attendees}) => {
                 <Item.Image size="tiny" src={attendee.photoURL} />
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">
-                    <a>{attendee.name}</a>
+                     {/* /events added just to take away warning likely will point to the users profile */}
+                    <a href="/events">{attendee.name}</a>
                   </Item.Header>
                 </Item.Content>
               </Item>

@@ -21,7 +21,8 @@ class EventListItem extends Component {
               <Item.Content>
                 <Item.Header as="a">{event.title}</Item.Header>
                 <Item.Description>
-                  Hosted by <a>{event.hostedBy}</a>
+                  {/* only added for now likely to link to that users profile */}
+                  Hosted by <a href="/events">{event.hostedBy}</a>
                 </Item.Description>
               </Item.Content>
             </Item>
