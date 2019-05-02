@@ -118,7 +118,8 @@ class EventForm extends Component {
               <Field
                 name="venue"
                 type="text"
-                component={TextInput}
+                component={PlaceInput}
+                options={{types: ['establishment']}}
                 placeholder="What venue will you use for this event?"
               />
               <Field
