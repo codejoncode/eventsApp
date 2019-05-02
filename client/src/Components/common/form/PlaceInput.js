@@ -3,7 +3,11 @@ import { Form, Label } from 'semantic-ui-react';
 import Script from 'react-load-script';
 import PlacesAutocomplete from 'react-places-autocomplete';
 
-
+const styles = {
+    autocompleteContainer: {
+        zIndex: 1000
+    }
+}
 class PlaceInput extends Component {
   state = {
     scriptLoaded: false, 
@@ -31,7 +35,8 @@ class PlaceInput extends Component {
           options={options}
           onSelect={onSelect}
           clearItemsOnError={true}
-          onError = {this.handleError}
+          onError={this.handleError}
+          styles={styles} 
         />}
         {touched && error && (
         <Label basic color="red">
