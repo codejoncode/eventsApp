@@ -77,6 +77,9 @@ class EventForm extends Component {
           cityLatLng: latlng
         })
       })
+      .then(() => {
+        this.props.change('city', selectedCity)
+      })
   }
 
   onFormSubmit = values => {
