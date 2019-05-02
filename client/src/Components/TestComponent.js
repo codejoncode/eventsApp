@@ -43,7 +43,7 @@ class TestComponent extends Component {
         return (
             <div>
                 <Script 
-                  url= "https://maps.googleapis.com/maps/api/js?key=AIzaSyCNGOxK-OnZptuuw7oX9w6ITE-AyAMDimk&libraries=places"
+                  url= "https://maps.googleapis.com/maps/api/js?key=AIzaSyA6o5Cp00yTK6-uI1_26PHJ0PhHBHb5RPY&libraries=places"
                   onLoad={this.handleScriptLoaded}
                 />
                 <h1>Test</h1>

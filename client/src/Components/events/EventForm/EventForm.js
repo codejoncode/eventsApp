@@ -16,6 +16,7 @@ import TextInput from "../../common/form/TextInput";
 import TextArea from "../../common/form/TextArea";
 import SelectInput from "../../common/form/SelectInput";
 import DateInput from "../../common/form/DateInput";
+import PlaceInput from "../../common/form/PlaceInput";
 
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
 const mapState = (state, ownProps) => {
@@ -110,7 +111,8 @@ class EventForm extends Component {
               <Field
                 name="city"
                 type="text"
-                component={TextInput}
+                component={PlaceInput}
+                options={{types: ['(cities)']}}
                 placeholder="What city is your event located?"
               />
               <Field
