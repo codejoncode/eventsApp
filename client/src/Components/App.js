@@ -11,11 +11,13 @@ import EventDetailedPage from "../Components/events/EventDetailed/EventDetailedP
 import HomePage from "./home/HomePage";
 import EventForm from "./events/EventForm/EventForm";
 import TestComponent from "./TestComponent";
+import ModalManager from '../Components/modals/ModalManager'
 
 class App extends Component {
   render() {
     return (
       <div>
+        <ModalManager />
         <Switch>
           <Route exact path="/" component={HomePage} />
         </Switch>
@@ -24,6 +26,7 @@ class App extends Component {
           path="/(.+)"
           render={() => (
             <div>
+
               <NavBar />
               <Container className="main">
                 <Switch>
