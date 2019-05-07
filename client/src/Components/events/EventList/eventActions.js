@@ -52,10 +52,17 @@ export const updateEvent = event => {
 };
 
 export const deleteEvent = eventId => {
-  return {
-    type: DELETE_EVENT,
-    payload: {
-      eventId
+  return async dispatch => {
+    try {
+      dispatch({
+        type: DELETE_EVENT,
+        payload: {
+          eventId
+        }
+      });
+      toastr.success("Success!", "Event has been deleted");
+    } catch (error) {
+      toastr.error("Oops", "Something went wrong");
     }
   };
 };

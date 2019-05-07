@@ -5,19 +5,22 @@ import { CREATE_EVENT, DELETE_EVENT, UPDATE_EVENT, FETCH_EVENTS } from './eventC
 
 
   export const createEvent = (state, payload) => {
-      return [...initialState, Object.assign({}, payload.event)];
+    //   return [...initialState, Object.assign({}, payload.event)];
+    return [...state, Object.assign({}, payload.event)];
   };
 
   export const updateEvent = (state, payload) => {
       return [
-          ...initialState.filter(event => event.id !== payload.event.id), // spread eveything but the event that is being updated 
+          //...initialState.filter(event => event.id !== payload.event.id), 
+          // spread eveything but the event that is being updated 
+          ...state.filter(event => event.id !== payload.event.id),
           Object.assign({}, payload.event)
       ]
   };
 
   export const deleteEvent = (state, payload) => {
       return [
-        ...initialState.filter(event => event.id !== payload.eventId),
+        ...state.filter(event => event.id !== payload.eventId),
       ]
   };
 
