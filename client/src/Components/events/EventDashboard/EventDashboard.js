@@ -8,6 +8,7 @@ import {
 } from "../EventList/eventActions";
 
 import LoadingComponent from '../../layout/LoadingComponent';
+import EventActivity from '../EventActivity/EventActivity';
 
 const mapState = state => ({
   events: state.events,
@@ -32,7 +33,9 @@ class EventDashboard extends Component {
         <Grid.Column width={10}>
           <EventList deleteEvent={this.handleDeleteEvent} events={events} />
         </Grid.Column>
-        <Grid.Column width={6} />
+        <Grid.Column width={6}>
+          <EventActivity />
+        </Grid.Column>
       </Grid>
     );
   }
