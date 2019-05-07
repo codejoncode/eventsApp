@@ -4,13 +4,15 @@ import testReducer from "./testReducer";
 import eventReducer from "../../Components/events/EventList/eventReducer";
 import modalReducer from "../../Components/modals/modalReducer";
 import authReducer from "../../Components/auth/authReducer";
+import asyncReducer from "../../Components/async/asyncReducer";
 
 const rootReducer = combineReducers({
   test: testReducer, // will be able to access testReducer using the name test.
   events: eventReducer,
   form: FormReducer,
   modals: modalReducer,
-  auth: authReducer
+  auth: authReducer,
+  async: asyncReducer,
 });
 
 export default rootReducer;
