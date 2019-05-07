@@ -7,8 +7,11 @@ import {
   deleteEvent,
 } from "../EventList/eventActions";
 
+import LoadingComponent from '../../layout/LoadingComponent';
+
 const mapState = state => ({
-  events: state.events
+  events: state.events,
+  loading: state.async.loading,
 });
 
 const actions = {
@@ -22,7 +25,8 @@ class EventDashboard extends Component {
   };
 
   render() {
-    const { events } = this.props;
+    const { events, loading } = this.props;
+    if (loading) return <LoadingComponent inverted={true}/> //the inverted turns the color light if true if note on the component it will be dark. 
     return (
       <Grid>
         <Grid.Column width={10}>
