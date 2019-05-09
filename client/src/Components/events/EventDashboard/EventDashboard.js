@@ -41,3 +41,4 @@ export default connect(
   mapState,
   actions
 )(firestoreConnect([{ collection: "event" }])(EventDashboard));
+//we don't have to get the event we are listening for the event. 
