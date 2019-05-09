@@ -11,7 +11,7 @@ import App from "./Components/App";
 import * as serviceWorker from "./serviceWorker";
 import { configureStore } from "./store/configureStore";
 import ScrollToTop from "./Components/common/util/ScrollToTop";
-import { loadEvents } from '../src/Components/events/EventList/eventActions'
+// import { loadEvents } from '../src/Components/events/EventList/eventActions'
 
 /*Hot modules allows for updating without the application having to refresh 
  refresh manually if you have issues but most of the time you wont' need to refresh. 
@@ -21,7 +21,7 @@ import { loadEvents } from '../src/Components/events/EventList/eventActions'
 
 const store = configureStore();
 /*Want the events to load right when the application loads so use the store to dispatch and load the events */
-store.dispatch(loadEvents());
+// store.dispatch(loadEvents());
 
 const rootElement = document.getElementById("root");
 
