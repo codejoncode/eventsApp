@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Segment, Button, Label } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
+import { combineValidators, isRequired } from 'revalidate';
 import TextInput from '../../common/form/TextInput';
 import { registerUser } from '../authActions';
 
@@ -9,7 +10,13 @@ const actions = {
   registerUser
 }
 
-const RegisterForm = ({handleSubmit, registerUser, error }) => {
+const validate = combineValidators({
+  displayName: isRequired('displayName'),
+  email: isRequired('email'),
+  password: isRequired('password')
+})
+
+const RegisterForm = ({handleSubmit, registerUser, error, invalid, submitting }) => {
   return (
     <div>
       <Form size="large" onSubmit = {handleSubmit(registerUser)}>
@@ -33,7 +40,7 @@ const RegisterForm = ({handleSubmit, registerUser, error }) => {
             placeholder="Password"
           />
           {error && <Label basic color="red">{error}</Label>}
-          <Button fluid size="large" color="teal">
+          <Button disabled={invalid || submitting } fluid size="large" color="teal">
             Register
           </Button>
         </Segment>
@@ -42,4 +49,4 @@ const RegisterForm = ({handleSubmit, registerUser, error }) => {
   );
 };
 
-export default connect(null, actions)(reduxForm({form : 'registerForm'})(RegisterForm));
+export default connect(null, actions)(reduxForm({form : 'registerForm', validate})(RegisterForm));

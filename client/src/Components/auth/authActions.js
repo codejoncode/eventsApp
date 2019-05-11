@@ -41,6 +41,7 @@ async (dispatch, getState, {getFirebase, getFirestore}) => {
     await firestore.set(`users/${createdUser.uid}`, {...newUser})
     dispatch(closeModal());
   } catch (error) {
+    console.log(error)
     throw new SubmissionError({
       _error: error.message
     })
