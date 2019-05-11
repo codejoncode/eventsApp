@@ -26,10 +26,11 @@ async (dispatch, getState, {getFirebase, getFirestore}) => {
   const firestore = getFirestore();
   try {
     // create the user in firebase auth
-    let createdUser = await firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
-    console.log(createdUser);
+    let createdUser = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(user.email, user.password);
     // update the auth profile
-    await createdUser.updateProfile({
+    await firebase.updateProfile({
       displayName: user.displayName
     })
     // create a new profile in firestore
@@ -40,7 +41,6 @@ async (dispatch, getState, {getFirebase, getFirestore}) => {
     await firestore.set(`users/${createdUser.uid}`, {...newUser})
     dispatch(closeModal());
   } catch (error) {
-    console.log(error)
     throw new SubmissionError({
       _error: error.message
     })
