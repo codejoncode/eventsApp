@@ -14,6 +14,7 @@ class EventDetailedInfo extends Component {
   }
   render() {
     const { event } = this.props;
+    console.log(event)
     return (
       <Segment.Group>
         <Segment attached="top">

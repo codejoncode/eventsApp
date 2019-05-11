@@ -32,7 +32,7 @@ class EventListItem extends Component {
         <Segment>
           <span>
             {/* {' ' } just gives an extra space */}
-            <Icon name="clock" /> {format(event.date.toDate(), 'dddd Do MMMM')} at{' '} 
+            <Icon name="clock" /> { format(event.date.toDate(), 'dddd Do MMMM')} at{' '} 
             {format(event.date.toDate(), 'HH:mm')} |
             <Icon name="marker" /> {event.venue}
           </span>

@@ -1,4 +1,9 @@
-import firebase from 'firebase';
+// import firebase from 'firebase';
+// import 'firebase/firestore';
+
+import firebase from 'firebase/';
+import 'firebase/auth';
+import 'firebase/storage';
 import 'firebase/firestore';
 
 const firebaseConfig = {
@@ -12,7 +17,12 @@ const firebaseConfig = {
   };
 
 firebase.initializeApp(firebaseConfig);
-firebase.firestore();
+const firestore = firebase.firestore();
+const settings = {
+  timestampsInSnapshots: true
+
+}
+firestore.settings(settings);
 
 
 /* using a couple of packages redux-firestore and react-redux-firebase 

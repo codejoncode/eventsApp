@@ -1,5 +1,5 @@
 import { SubmissionError } from 'redux-form';
-import { SIGN_OUT_USER } from "./authConstants";
+// import { SIGN_OUT_USER } from "./authConstants";
 import { closeModal } from '../modals/modalActions';
 
 export const login = creds => {
@@ -47,3 +47,18 @@ async (dispatch, getState, {getFirebase, getFirestore}) => {
     })
   }
 }
+
+export const socialLogin = (selectedProvider) => 
+  async (dispatch, getSate, {getFirebase}) => {
+    const firebase = getFirebase();
+
+    try {
+      dispatch(closeModal()); // close modal because something different will open for the social login. 
+      await firebase.login({
+        provider: selectedProvider,
+        type: 'popup'
+      })
+    } catch (error){
+      console.log(error)
+    }
+  }
