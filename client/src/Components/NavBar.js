@@ -7,11 +7,10 @@ import logo from "../Images/users.png";
 import SignedOutMenu from "../Menus/SignedOutMenu";
 import SignedInMenu from "../Menus/SignedInMenu";
 import { openModal } from '../Components/modals/modalActions';
-import { logout } from '../Components/auth/authActions';
 
 const actions = {
   openModal,
-  logout
+
 }
 
 const mapState = (state) => ({
