@@ -7,14 +7,11 @@ const SocialLogin = ({socialLogin}) => {
            <Icon name="facebook" /> Login with Facebook
          </Button>
    
-         <Button type="button" style={{ marginBottom: '10px' }} fluid color="google plus">
+         <Button onClick = {() => socialLogin('google')} type="button" style={{ marginBottom: '10px' }} fluid color="google plus">
            <Icon name="google plus" />
            Login with Google
          </Button>
-
-         <Button type="button"  fluid color ="twitter">
-           <Icon name = "twitter" /> Login with Twitter
-         </Button>
+    
        </div>
   )
 }

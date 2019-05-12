@@ -49,15 +49,23 @@ async (dispatch, getState, {getFirebase, getFirestore}) => {
 }
 
 export const socialLogin = (selectedProvider) => 
-  async (dispatch, getSate, {getFirebase}) => {
+  async (dispatch, getSate, {getFirebase, getFirestore}) => {
     const firebase = getFirebase();
+    const firestore = getFirestore();
 
     try {
       dispatch(closeModal()); // close modal because something different will open for the social login. 
-      await firebase.login({
+      let user = await firebase.login({
         provider: selectedProvider,
         type: 'popup'
       })
+      if(user.additionalUserInfo.isNewUser){
+        await firestore.set(`users/${user.user.uid}`, {
+          displayName: user.profile.displayName,
+          photoURL : user.profile.avatarUrl, // may have to be photoUrl
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        })
+      }
     } catch (error){
       console.log(error)
     }
