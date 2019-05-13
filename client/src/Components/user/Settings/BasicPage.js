@@ -45,4 +45,5 @@ class BasicPage extends Component {
     }
 }
 
-export default reduxForm({form: 'userProfile'})(BasicPage);
+export default reduxForm({form: 'userProfile', enableReinitialize: true})(BasicPage);
+//enableReinitialize will reload the data automatically

@@ -16,15 +16,20 @@ const actions = {
 const mapState =  (state) => ({
   //only do this if the user is authenticated / loaded state.firebase.auth.isLoaded && 
   providerId: state.firebase.auth.providerData[0].providerId, // whether its  google or facebook or a regular user logging it outside of social meida
+  user: state.firebase.profile
 })
 //stateless functional component
-const SettingsDashboard = ({ updatePassword, providerId }) => {
+const SettingsDashboard = ({ updatePassword, providerId, user }) => {
   return (
     <Grid>
       <Grid.Column width={12}>
         <Switch>
           <Redirect exact from="/settings" to="settings/basic" />
-          <Route path="/settings/basic" component={BasicPage} />
+          <Route 
+            path="/settings/basic" 
+            render={() => <BasicPage initialValues={user}/>}
+            // using initialValues because of the redux form's need. 
+          />
           <Route path="/settings/about" component={AboutPage} />
           <Route path="/settings/photos" component={PhotosPage} />
           <Route
