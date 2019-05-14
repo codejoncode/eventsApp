@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Segment, Form, Header, Divider, Button} from 'semantic-ui-react';
 import {Field, reduxForm} from 'redux-form';
+import moment from 'moment';
 import DateInput from "../../common/form/DateInput"
 import PlaceInput from "../../common/form/PlaceInput";
 import TextInput from "../../common/form/TextInput";
@@ -9,11 +10,11 @@ import RadioInput from "../../common/form/RadioInput";
 class BasicPage extends Component {
 
     render() {
-        const {pristine, submitting} = this.props;
+        const {pristine, submitting, handleSubmit, updateProfile} = this.props;
         return (
             <Segment>
                 <Header dividing size='large' content='Basics' />
-                <Form>
+                <Form onSubmit = {handleSubmit(updateProfile)}>
                     <Field
                         width={8}
                         name='displayName'
@@ -22,6 +23,7 @@ class BasicPage extends Component {
                         placeholder='Known As'
                     />
                     <Form.Group inline>
+                      <label>Gender: </label>
                       <Field 
                         name='gender'
                         type='radio'
@@ -32,7 +34,7 @@ class BasicPage extends Component {
                       <Field 
                         name='gender'
                         type='radio'
-                        value='male'
+                        value='female'
                         label='Female'
                         component={RadioInput}
                       />
@@ -42,6 +44,11 @@ class BasicPage extends Component {
                         name='dateOfBirth'
                         component={DateInput}
                         placeholder='Date of Birth'
+                        dateFormat = 'YYYY-MM-DD'
+                        showYearDropdown = {true}
+                        showMonthDropdown = {true}
+                        dropdownMode = 'select'
+                        maxDate ={moment().subtract(18, 'years')}
                     />
                     <Field
                         name='city'
@@ -59,5 +66,10 @@ class BasicPage extends Component {
     }
 }
 
-export default reduxForm({form: 'userProfile', enableReinitialize: true})(BasicPage);
-//enableReinitialize will reload the data automatically
+export default reduxForm({form: 'userProfile',enableReinitialize: true})(BasicPage);
+//enableReinitialize will reload the data automatically  enableReinitialize: true - causes error currently   
+/* 
+invariant.js:41 Uncaught Invariant Violation: Maximum update depth exceeded. 
+This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
+React limits the number of nested updates to prevent infinite loops.
+*/
