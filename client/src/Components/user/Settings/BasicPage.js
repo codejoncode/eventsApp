@@ -66,8 +66,8 @@ class BasicPage extends Component {
     }
 }
 
-export default reduxForm({form: 'userProfile',enableReinitialize: true})(BasicPage);
+export default reduxForm({form: 'userProfile',enableReinitialize: true, destroyOnUnmount: false})(BasicPage);
 //enableReinitialize will reload the data automatically  enableReinitialize: true - causes error currently   
 /* 
-
+redux form destroys the data when it unmounts  destroyOnUnmount solves this. 
 */

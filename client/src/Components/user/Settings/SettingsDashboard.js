@@ -43,7 +43,9 @@ class SettingsDashboard extends Component {
             )}
             // using initialValues because of the redux form's need.
           />
-          <Route path="/settings/about" component={AboutPage} />
+          <Route path="/settings/about" 
+            render = {() => <AboutPage updateProfile={updateProfile} initialValues={user} />}
+          />
           <Route path="/settings/photos" component={PhotosPage} />
           <Route
             path="/settings/account"
