@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import moment from 'moment'; 
 
 import SettingsNav from "./SettingsNav";
 import AboutPage from "./AboutPage";
@@ -25,13 +24,6 @@ const mapState = state => ({
 
 class SettingsDashboard extends Component {
   
-  // user.dateOfBirth = moment(user.dateOfBirth,'DD/MM/YYYY').format();
-  // console.log(user)
-  componentWillMount () {
-    // if (this.props.user){
-    //   this.props.user.dateOfBirth = {date: moment(this.props.dateOfBirth)}
-    // }
-  }
   render () {
     const {
       updatePassword,
@@ -39,7 +31,6 @@ class SettingsDashboard extends Component {
       user,
       updateProfile
     } = this.props;
-    console.log(user)
   return (
     <Grid>
       <Grid.Column width={12}>

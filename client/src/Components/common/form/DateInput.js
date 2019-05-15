@@ -23,10 +23,7 @@ class DateInput extends Component {
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        // selected={value ? moment(value) : null} caused an invariant issue. 
-        // selected = {value && isValid(new Date(value)) ? new Date(value) : null}
         selected = {value && isValid(new Date(value)) ? moment(value) : null}
-        // selected= {value ? value : null}
         onChange={onChange}
         {...restInput}
       />
