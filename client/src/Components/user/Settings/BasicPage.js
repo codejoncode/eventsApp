@@ -44,7 +44,7 @@ class BasicPage extends Component {
                         name='dateOfBirth'
                         component={DateInput}
                         placeholder='Date of Birth'
-                        dateFormat = 'YYYY-MM-DD'
+                        // dateFormat = "YYYY-MM-DD HH:mm"
                         showYearDropdown = {true}
                         showMonthDropdown = {true}
                         dropdownMode = 'select'
@@ -69,7 +69,5 @@ class BasicPage extends Component {
 export default reduxForm({form: 'userProfile',enableReinitialize: true})(BasicPage);
 //enableReinitialize will reload the data automatically  enableReinitialize: true - causes error currently   
 /* 
-invariant.js:41 Uncaught Invariant Violation: Maximum update depth exceeded. 
-This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
-React limits the number of nested updates to prevent infinite loops.
+
 */

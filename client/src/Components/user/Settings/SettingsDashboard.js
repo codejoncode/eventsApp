@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import moment from 'moment'; 
+
 import SettingsNav from "./SettingsNav";
 import AboutPage from "./AboutPage";
 import BasicPage from "./BasicPage";
@@ -20,13 +22,24 @@ const mapState = state => ({
   providerId: state.firebase.auth.providerData[0].providerId, // whether its  google or facebook or a regular user logging it outside of social meida
   user: state.firebase.profile
 });
-//stateless functional component
-const SettingsDashboard = ({
-  updatePassword,
-  providerId,
-  user,
-  updateProfile
-}) => {
+
+class SettingsDashboard extends Component {
+  
+  // user.dateOfBirth = moment(user.dateOfBirth,'DD/MM/YYYY').format();
+  // console.log(user)
+  componentWillMount () {
+    // if (this.props.user){
+    //   this.props.user.dateOfBirth = {date: moment(this.props.dateOfBirth)}
+    // }
+  }
+  render () {
+    const {
+      updatePassword,
+      providerId,
+      user,
+      updateProfile
+    } = this.props;
+    console.log(user)
   return (
     <Grid>
       <Grid.Column width={12}>
@@ -58,6 +71,7 @@ const SettingsDashboard = ({
     </Grid>
   );
 };
+}
 
 export default connect(
   mapState,
