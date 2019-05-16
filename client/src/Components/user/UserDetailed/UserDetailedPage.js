@@ -5,14 +5,10 @@ import {
   Card,
   Grid,
   Header,
-  Icon,
   Image,
-  Item,
-  List,
   Menu,
   Segment
 } from "semantic-ui-react";
-import differenceInYears from "date-fns/difference_in_years";
 import imagesObject from "../../../Images/imagesObject";
 import UserDetailedHeader from "./UserDetailedHeader";
 import UserDetailedAboutInfo from "./UserDetailedAboutInfo";
@@ -28,11 +24,10 @@ const mapState = state => ({
 
 class UserDetailedPage extends Component {
   handleEditProfile = () => () => {
-    this.props.history.push('/settings')
-  }
+    this.props.history.push("/settings");
+  };
   render() {
-    const { auth, profile, photos, loading } = this.props;
-    console.log(this.props);
+    const { profile, photos } = this.props;
     return (
       <Grid>
         <UserDetailedHeader profile={profile} />
@@ -46,7 +41,13 @@ class UserDetailedPage extends Component {
         </Grid.Column>
         <Grid.Column width={4}>
           <Segment>
-            <Button onClick={this.handleEditProfile()} color="teal" fluid basic content="Edit Profile" />
+            <Button
+              onClick={this.handleEditProfile()}
+              color="teal"
+              fluid
+              basic
+              content="Edit Profile"
+            />
           </Segment>
         </Grid.Column>
         {photos && <UserDetailedPhotos photos={photos} />}

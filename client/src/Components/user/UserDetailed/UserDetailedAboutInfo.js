@@ -3,12 +3,12 @@ import moment from "moment";
 import { Grid, Header } from "semantic-ui-react";
 
 const UserDetailedAboutInfo = ({ profile }) => {
-    let memberSince = null; 
-    if (profile.createdAt) {
-        memberSince = moment(profile.createdAt, 'X')
-    }
-    console.log(moment(memberSince))
-    // console.log(profile.createdAt.seconds)
+  let memberSince = null;
+  if (profile.createdAt) {
+    memberSince = profile.createdAt.toDate();
+    memberSince = moment(memberSince).format("YYYY-MM-DD");
+  }
+
   return (
     <Grid.Column width={10}>
       <Header icon="smile" content={`About ${profile.displayName}`} />
@@ -19,7 +19,7 @@ const UserDetailedAboutInfo = ({ profile }) => {
         Originally from <strong>{profile.origin}</strong>
       </p>
       <p>
-        Member Since: <strong></strong>
+        Member Since: <strong>{profile.createdAt ? memberSince : null}</strong>
         {/* profile.createdAt ? memberSince._d : null */}
       </p>
       <p>{`Description: ${profile.about}`}</p>
