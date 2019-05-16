@@ -55,7 +55,7 @@ class PhotosPage extends Component {
       }
     }
 
-    cancleCrop = () => {
+    cancelCrop = () => {
       this.setState({
         files: [], 
         image: []
@@ -103,7 +103,7 @@ class PhotosPage extends Component {
                         <Image style={{minHeight: '200px', minWidth: '200px'}} src={this.state.cropResult}/>
                         <Button.Group>
                           <Button onClick = {this.uploadImage} style = {{width: '100px'}} positive icon='check'/>
-                          <Button onClick = {this.cancleCrop} style = {{width: '100px'}}  icon='close'/>
+                          <Button onClick = {this.cancelCrop} style = {{width: '100px'}}  icon='close'/>
                         </Button.Group>
                         </div>
                         }
