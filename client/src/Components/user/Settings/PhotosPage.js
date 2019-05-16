@@ -186,7 +186,7 @@ class PhotosPage extends Component {
 
         <Card.Group itemsPerRow={5}>
           <Card>
-            <Image src={profile.photoURL} />
+            <Image src={profile.photoURL || '../../../Images/user.png'} />
             <Button positive>Main Photo</Button>
           </Card>
           {photos &&
