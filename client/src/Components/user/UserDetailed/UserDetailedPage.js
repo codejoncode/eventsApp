@@ -27,9 +27,12 @@ const mapState = state => ({
 });
 
 class UserDetailedPage extends Component {
+  handleEditProfile = () => () => {
+    this.props.history.push('/settings')
+  }
   render() {
     const { auth, profile, photos, loading } = this.props;
-    console.log(profile);
+    console.log(this.props);
     return (
       <Grid>
         <UserDetailedHeader profile={profile} />
@@ -43,10 +46,10 @@ class UserDetailedPage extends Component {
         </Grid.Column>
         <Grid.Column width={4}>
           <Segment>
-            <Button color="teal" fluid basic content="Edit Profile" />
+            <Button onClick={this.handleEditProfile()} color="teal" fluid basic content="Edit Profile" />
           </Segment>
         </Grid.Column>
-        <UserDetailedPhotos photos={photos} />
+        {photos && <UserDetailedPhotos photos={photos} />}
 
         <Grid.Column width={12}>
           <Segment attached>
