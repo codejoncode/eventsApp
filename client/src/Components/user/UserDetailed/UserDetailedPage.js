@@ -36,7 +36,7 @@ class UserDetailedPage extends Component {
         <Grid.Column width={12}>
           <Segment>
             <Grid columns={2}>
-              <UserDetailedAboutInfo profile={profile}/>
+              <UserDetailedAboutInfo profile={profile} />
               <UserDetailedInterests profile={profile} />
             </Grid>
           </Segment>
@@ -46,8 +46,7 @@ class UserDetailedPage extends Component {
             <Button color="teal" fluid basic content="Edit Profile" />
           </Segment>
         </Grid.Column>
-        {/* Photos component  */}
-        <UserDetailedPhotos photos ={photos} />
+        <UserDetailedPhotos photos={photos} />
 
         <Grid.Column width={12}>
           <Segment attached>
