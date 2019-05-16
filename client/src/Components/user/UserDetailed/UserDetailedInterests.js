@@ -5,6 +5,7 @@ const UserDetailedInterests = ({ profile }) => {
   return (
     <Grid.Column width={6}>
       <Header icon="heart outline" content="Interests" />
+      {profile.interests ? 
       <List>
         {profile.interests &&
           profile.interests.map((interest, id) => (
@@ -13,7 +14,7 @@ const UserDetailedInterests = ({ profile }) => {
               <Item.Content>{interest}</Item.Content>
             </Item>
           ))}
-      </List>
+      </List> : <p>No interests</p>}
     </Grid.Column>
   );
 };

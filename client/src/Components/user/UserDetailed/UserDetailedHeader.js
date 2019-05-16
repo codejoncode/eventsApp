@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Header, Item, Segment } from "semantic-ui-react";
 import differenceInYears from "date-fns/difference_in_years";
-
+import imagesObject from "../../../Images/imagesObject"
 const UserDetailedHeader = ({ profile }) => {
   let age;
   if (profile.dateOfBirth) {
@@ -14,13 +14,13 @@ const UserDetailedHeader = ({ profile }) => {
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image avatar size="small" src={profile.photoURL} />
+            <Item.Image avatar size="small" src={profile.photoURL || imagesObject.user} />
             <Item.Content verticalAlign="bottom">
               <Header as="h1">{profile.displayName}</Header>
               <br />
               <Header as="h3">{profile.occupation}</Header>
               <br />
-              <Header as="h3">{`${age}, ${profile.city}`}</Header>
+              <Header as="h3">{age}, Lives in {profile.city || 'unknown city'}</Header>
             </Item.Content>
           </Item>
         </Item.Group>

@@ -1,31 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Button,
-  Card,
-  Grid,
-  Header,
-  Image,
-  Menu,
-  Segment
-} from "semantic-ui-react";
-import imagesObject from "../../../Images/imagesObject";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { Button, Grid, Segment } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import UserDetailedHeader from "./UserDetailedHeader";
 import UserDetailedAboutInfo from "./UserDetailedAboutInfo";
 import UserDetailedInterests from "./UserDetailedInterests";
 import UserDetailedPhotos from "./UserDetailedPhotos";
+import UserDetailedEvents from "./UserDetailedEvents";
+
+const query = ({ auth }) => {
+  return [
+    {
+      collection: "users",
+      doc: auth.uid,
+      subcollections: [{ collection: "photos" }],
+      storeAs: "photos"
+    }
+  ];
+};
 
 const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
-  photos: state.firestore.ordered.photos,
-  loading: state.async.loading
+  photos: state.firestore.ordered.photos
 });
 
 class UserDetailedPage extends Component {
-  handleEditProfile = () => () => {
-    this.props.history.push("/settings");
-  };
   render() {
     const { profile, photos } = this.props;
     return (
@@ -42,7 +44,8 @@ class UserDetailedPage extends Component {
         <Grid.Column width={4}>
           <Segment>
             <Button
-              onClick={this.handleEditProfile()}
+              as={Link}
+              to="/settings"
               color="teal"
               fluid
               basic
@@ -50,47 +53,14 @@ class UserDetailedPage extends Component {
             />
           </Segment>
         </Grid.Column>
-        {photos && <UserDetailedPhotos photos={photos} />}
-
-        <Grid.Column width={12}>
-          <Segment attached>
-            <Header icon="calendar" content="Events" />
-            <Menu secondary pointing>
-              <Menu.Item name="All Events" active />
-              <Menu.Item name="Past Events" />
-              <Menu.Item name="Future Events" />
-              <Menu.Item name="Events Hosted" />
-            </Menu>
-
-            <Card.Group itemsPerRow={5}>
-              <Card>
-                <Image src={imagesObject.drinks} />
-                <Card.Content>
-                  <Card.Header textAlign="center">Event Title</Card.Header>
-                  <Card.Meta textAlign="center">
-                    28th March 2018 at 10:00 PM
-                  </Card.Meta>
-                </Card.Content>
-              </Card>
-
-              <Card>
-                <Image src={imagesObject.drinks} />
-                <Card.Content>
-                  <Card.Header textAlign="center">Event Title</Card.Header>
-                  <Card.Meta textAlign="center">
-                    28th March 2018 at 10:00 PM
-                  </Card.Meta>
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </Segment>
-        </Grid.Column>
+        {photos && photos.length > 0 && <UserDetailedPhotos photos={photos} />}
+        <UserDetailedEvents />
       </Grid>
     );
   }
 }
 
-export default connect(
-  mapState,
-  {}
+export default compose(
+  connect(mapState),
+  firestoreConnect(auth => query(auth))
 )(UserDetailedPage);
