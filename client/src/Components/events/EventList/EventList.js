@@ -7,7 +7,6 @@ class EventList extends Component {
   render() {
     //destructor props for the events.
     const { events, deleteEvent } = this.props;
-
     return (
       <div>
         {events && events.map(event => (

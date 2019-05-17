@@ -11,10 +11,10 @@ import {
   isRequired,
   hasLengthGreaterThan
 } from "revalidate";
-import cuid from "cuid";
+// import cuid from "cuid";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { createEvent, updateEvent } from "../EventList/eventActions";
-import defaultPhoto from "../../../Images/user.png";
+// import defaultPhoto from "../../../Images/user.png";
 import TextInput from "../../common/form/TextInput";
 import TextArea from "../../common/form/TextArea";
 import SelectInput from "../../common/form/SelectInput";
@@ -102,13 +102,8 @@ class EventForm extends Component {
       this.props.updateEvent(values);
       this.props.history.goBack();
     } else {
-      const newEvent = {
-        ...values,
-        id: cuid(),
-        hostPhotoURL: defaultPhoto,
-        hostedBy: "Jonathan"
-      };
-      this.props.createEvent(newEvent);
+      
+      this.props.createEvent(values);
       this.props.history.push("/events");
     }
   };

@@ -2,7 +2,7 @@ import React from 'react'
 import { Segment, List, Item, Label } from 'semantic-ui-react';
 
 const EventDetailedSidebar  = ({attendees}) => {
-  const isHost = false; 
+ 
   return (
        <div>
           <Segment
@@ -19,7 +19,7 @@ const EventDetailedSidebar  = ({attendees}) => {
             <List relaxed divided>
               {attendees && attendees.map((attendee) => (
               <Item key = {attendee.id} style={{ position: 'relative' }}>
-                {isHost && 
+                {attendee.host && 
                 <Label
                   style={{ position: 'absolute' }}
                   color="orange"
@@ -27,11 +27,11 @@ const EventDetailedSidebar  = ({attendees}) => {
                 >
                   Host
                 </Label>}
-                <Item.Image size="tiny" src={attendee.photoURL} />
+                <Item.Image size="tiny" src={attendee.photoUrl || attendee.photoURL} />
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">
                      {/* /events added just to take away warning likely will point to the users profile */}
-                    <a href="/events">{attendee.name}</a>
+                    <a href="/events">{attendee.name || attendee.displayName}</a>
                   </Item.Header>
                 </Item.Content>
               </Item>

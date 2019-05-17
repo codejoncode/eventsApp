@@ -6,6 +6,7 @@ import music from './music.jpg';
 import travel from './travel.jpg';
 import user from './user.png'; 
 import users from './users.png';
+import food from './food.jpg';
 
 
 const imagesObject = {
@@ -16,7 +17,8 @@ const imagesObject = {
     logo, 
     travel,
     user,
-    users
+    users,
+    food,
 }
 
 export default imagesObject;

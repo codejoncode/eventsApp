@@ -28,7 +28,9 @@ const mapState = state => ({
 });
 
 class UserDetailedPage extends Component {
+  
   render() {
+    console.log(this.props.auth)
     const { profile, photos } = this.props;
     return (
       <Grid>

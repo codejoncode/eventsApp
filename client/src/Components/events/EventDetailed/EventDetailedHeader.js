@@ -18,11 +18,13 @@ const eventImageTextStyle = {
 };
 
 const EventDetailedHeader = ({event}) => {
+  
+  const chosenCategory = event.category && event.category[0] ?   event.category[0] : "culture";
   return (
     <div>
       <Segment.Group>
         <Segment basic attached="top" style={{ padding: "0" }}>
-          <Image src={imagesObject[event.category]} fluid  style = {eventImageStyle}/>
+          <Image src={imagesObject[chosenCategory]} fluid  style = {eventImageStyle}/>
 
           <Segment basic style = {eventImageTextStyle}>
             <Item.Group>
@@ -33,7 +35,7 @@ const EventDetailedHeader = ({event}) => {
                     content={event.title}
                     style={{ color: "white" }}
                   />
-                  <p>{format(event.date, 'dddd, Do MMMM')}</p>
+                  <p>{event.date ? format(event.date.toDate(), 'dddd, Do MMMM'): null}</p>
                   <p>
                     Hosted by <strong>{event.hostedBy}</strong>
                   </p>
