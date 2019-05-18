@@ -13,8 +13,8 @@ import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 const mapState = state => {
   let event = {}; // an empty event will not thrown an error.
 
-  if (state.firestore.ordered.event && state.firestore.ordered.event[0]) {
-    event = state.firestore.ordered.event[0];
+  if (state.firestore.ordered.events && state.firestore.ordered.events[0]) {
+    event = state.firestore.ordered.events[0];
   }
 
   return {
@@ -31,7 +31,7 @@ const actions = {
 class EventDetailedPage extends Component {
   async componentDidMount() {
     const { firestore, match } = this.props;
-    await firestore.setListener(`event/${match.params.id}`);
+    await firestore.setListener(`events/${match.params.id}`);
     // let event = await firestore.get(`event/${match.params.id}`)
     // if(!event.exists){// if the user goes to a file instead of a 404  just send them to the events page.
     //   history.push('/events');
@@ -40,7 +40,7 @@ class EventDetailedPage extends Component {
   }
   async componentWillUnmount() {
     const { firestore, match } = this.props;
-    await firestore.unsetListener(`event/${match.params.id}`);
+    await firestore.unsetListener(`events/${match.params.id}`);
   }
 
   render() {

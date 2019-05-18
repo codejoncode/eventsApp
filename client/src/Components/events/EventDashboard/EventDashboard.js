@@ -9,7 +9,7 @@ import LoadingComponent from "../../layout/LoadingComponent";
 import EventActivity from "../EventActivity/EventActivity";
 
 const mapState = state => ({
-  events: state.firestore.ordered.event,
+  events: state.firestore.ordered.events,
   loading: state.async.loading
 });
 
@@ -40,5 +40,5 @@ class EventDashboard extends Component {
 export default connect(
   mapState,
   actions
-)(firestoreConnect([{ collection: "event" }])(EventDashboard));
+)(firestoreConnect([{ collection: "events" }])(EventDashboard));
 //we don't have to get the event we are listening for the event. 

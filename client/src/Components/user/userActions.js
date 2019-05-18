@@ -6,6 +6,7 @@ import {
   asyncActionFinish,
   asyncActionStart
 } from "../async/asyncActions";
+import imagesObject  from '../../Images/imagesObject';
 
 export const updateProfile = user => async (
   dispatch,
@@ -126,15 +127,16 @@ export const goingToEvent = event => async (
   const firestore = getFirestore();
   const user = firestore.auth().currentUser;
   const photoURL = getState().firebase.profile.photoURL;
+  const displayName = getState().firebase.profile.displayName;
   const attendee = {
     going: true,
     joinDate: Date.now(),
-    photoURL,
-    displayName: user.displayName,
+    photoURL : photoURL || imagesObject.user,
+    displayName: displayName,
     host: false
   };
   try {
-    await firestore.update(`event/${event.id}`, {
+    await firestore.update(`events/${event.id}`, {
       [`attendees.${user.uid}`]: attendee
     });
     //look up data to query later
@@ -159,7 +161,7 @@ export const cancelGoingToEvent = event => async (
   const firestore = getFirestore();
   const user = firestore.auth().currentUser;
   try {
-    await firestore.update(`event/${event.id}`, {
+    await firestore.update(`events/${event.id}`, {
       [`attendees.${user.uid}`]: firestore.FieldValue.delete()
     });
     //remove from lookup

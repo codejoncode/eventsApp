@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {List, Image} from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class EventListAttendee extends Component {
@@ -28,7 +29,7 @@ class EventListAttendee extends Component {
         // https://randomuser.me/api/portaits/women/42.jpg
         return (
             <List.Item >
-                <Image as='a' size='mini' circular src={attendee.photoUrl || attendee.photoURL}/>
+                <Image as={Link} to={`/profile/${attendee.id}`} size='mini' circular src={attendee.photoUrl || attendee.photoURL}/>
                                                         {/* https://randomuser.me/api/portaits/women/42.jpg */}
             </List.Item>
         )

@@ -25,8 +25,8 @@ const mapState = (state) => {
 
   let event = {}; // an empty event will not thrown an error.
   
-  if (state.firestore.ordered.event && state.firestore.ordered.event[0]) {
-    event = state.firestore.ordered.event[0];
+  if (state.firestore.ordered.events && state.firestore.ordered.events[0]) {
+    event = state.firestore.ordered.events[0];
   }
   //need to use key initialValues for the form. 
   return {
@@ -70,13 +70,13 @@ class EventForm extends Component {
   }
   async componentDidMount () {
     const {firestore, match} = this.props;
-    await firestore.setListener(`event/${match.params.id}`);
+    await firestore.setListener(`events/${match.params.id}`);
   }
 
   async componentWillUnmount () {
     /*this is will make it so that the listener is not still open once we leave the page */
     const {firestore, match} = this.props;
-    await firestore.unsetListener(`event/${match.params.id}`);
+    await firestore.unsetListener(`events/${match.params.id}`);
   }
   
   handleCitySelect = (selectedCity) => {

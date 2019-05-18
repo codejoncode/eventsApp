@@ -1,5 +1,6 @@
 import React from 'react'
 import { Segment, List, Item, Label } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const EventDetailedSidebar  = ({attendees}) => {
  
@@ -31,7 +32,7 @@ const EventDetailedSidebar  = ({attendees}) => {
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">
                      {/* /events added just to take away warning likely will point to the users profile */}
-                    <a href="/events">{attendee.name || attendee.displayName}</a>
+                    <Link to={`/profile/${attendee.id}`}>{attendee.name || attendee.displayName}</Link>
                   </Item.Header>
                 </Item.Content>
               </Item>
