@@ -1,7 +1,11 @@
 import moment from "moment";
 import { toastr } from "react-redux-toastr";
 import cuid from "cuid";
-import { asynActionError, asyncActionFinish, asyncActionStart } from '../async/asyncActions';
+import {
+  asynActionError,
+  asyncActionFinish,
+  asyncActionStart
+} from "../async/asyncActions";
 
 export const updateProfile = user => async (
   dispatch,
@@ -39,7 +43,7 @@ export const uploadProfileImage = (file, fileName) => async (
   };
 
   try {
-    dispatch(asyncActionStart)
+    dispatch(asyncActionStart);
     // upload the file to firebase storage
     let uploadedFile = await firebase.uploadFile(path, file, null, options);
     // get url of image
@@ -58,7 +62,7 @@ export const uploadProfileImage = (file, fileName) => async (
       });
     }
     // add the new phto as a new image in photo collection
-     await firestore.add(
+    await firestore.add(
       {
         collection: "users",
         doc: user.uid,
@@ -69,10 +73,10 @@ export const uploadProfileImage = (file, fileName) => async (
         url: downloadURL
       }
     );
-    dispatch(asyncActionFinish)
+    dispatch(asyncActionFinish);
   } catch (error) {
     console.log(error);
-    dispatch(asynActionError)
+    dispatch(asynActionError);
     throw new Error("Problem uploading photo");
   }
 };
@@ -114,34 +118,57 @@ export const setMainPhoto = photo => async (
   }
 };
 
-export const goingToEvent = (event) => 
-  async (dispatch, getState, {getFirestore}) => {
-    const firestore = getFirestore(); 
-    const user = firestore.auth().currentUser; 
-    const photoURL = getState().firebase.profile.photoURL; 
-    const attendee = {
-      going: true, 
-      joinDate: Date.now(),
-      photoURL, 
-      displayName: user.displayName, 
-      host: false 
-    }
-    try {
-      await firestore.update(`event/${event.id}`, {
-        [`attendees.${user.uid}`]: attendee
-      })
-      //look up data to query later 
-      await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
-        eventId: event.id, 
-        userUid : user.uid, 
-        eventDate: event.date, 
-        host: false
-      })
-      toastr.success('Success', 'You have signed up to the event')
-    } catch (error) {
-      console.log(error);
-      toastr.error('Sorry', "Problem signing up to the event")
-    }
+export const goingToEvent = event => async (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  const firestore = getFirestore();
+  const user = firestore.auth().currentUser;
+  const photoURL = getState().firebase.profile.photoURL;
+  const attendee = {
+    going: true,
+    joinDate: Date.now(),
+    photoURL,
+    displayName: user.displayName,
+    host: false
+  };
+  try {
+    await firestore.update(`event/${event.id}`, {
+      [`attendees.${user.uid}`]: attendee
+    });
+    //look up data to query later
+    await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
+      eventId: event.id,
+      userUid: user.uid,
+      eventDate: event.date,
+      host: false
+    });
+    toastr.success("Success", "You have signed up to the event");
+  } catch (error) {
+    console.log(error);
+    toastr.error("Sorry", "Problem signing up to the event");
   }
+};
+
+export const cancelGoingToEvent = event => async (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  const firestore = getFirestore();
+  const user = firestore.auth().currentUser;
+  try {
+    await firestore.update(`event/${event.id}`, {
+      [`attendees.${user.uid}`]: firestore.FieldValue.delete()
+    });
+    //remove from lookup
+    await firestore.delete(`event_attendee/${event.id}_${user.uid}`);
+    toastr.success("Success", "You have removed yourself from the event");
+  } catch (error) {
+    console.log(error);
+    toastr.error("Oops", "Something went wrong");
+  }
+};
 
 //No need for a reducer we will use firebase and its created  consts and reducers.

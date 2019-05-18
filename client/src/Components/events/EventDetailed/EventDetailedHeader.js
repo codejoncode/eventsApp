@@ -17,7 +17,7 @@ const eventImageTextStyle = {
   color: "white"
 };
 
-const EventDetailedHeader = ({ event, isHost, isGoing, goingToEvent }) => {
+const EventDetailedHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoingToEvent }) => {
   const chosenCategory =
     event.category && event.category[0] ? event.category[0] : "culture";
   let eventDate;
@@ -59,7 +59,7 @@ const EventDetailedHeader = ({ event, isHost, isGoing, goingToEvent }) => {
           {!isHost && (
             <div>
               {isGoing ? (
-                <Button>Cancel My Place</Button>
+                <Button onClick = {() => cancelGoingToEvent(event)}>Cancel My Place</Button>
               ) : (
                 <Button onClick = {() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
               )}
