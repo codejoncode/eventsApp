@@ -114,4 +114,34 @@ export const setMainPhoto = photo => async (
   }
 };
 
+export const goingToEvent = (event) => 
+  async (dispatch, getState, {getFirestore}) => {
+    const firestore = getFirestore(); 
+    const user = firestore.auth().currentUser; 
+    const photoURL = getState().firebase.profile.photoURL; 
+    const attendee = {
+      going: true, 
+      joinDate: Date.now(),
+      photoURL, 
+      displayName: user.displayName, 
+      host: false 
+    }
+    try {
+      await firestore.update(`event/${event.id}`, {
+        [`attendees.${user.uid}`]: attendee
+      })
+      //look up data to query later 
+      await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
+        eventId: event.id, 
+        userUid : user.uid, 
+        eventDate: event.date, 
+        host: false
+      })
+      toastr.success('Success', 'You have signed up to the event')
+    } catch (error) {
+      console.log(error);
+      toastr.error('Sorry', "Problem signing up to the event")
+    }
+  }
+
 //No need for a reducer we will use firebase and its created  consts and reducers.

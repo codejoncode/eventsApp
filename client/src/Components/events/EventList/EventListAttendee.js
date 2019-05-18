@@ -28,7 +28,7 @@ class EventListAttendee extends Component {
         // https://randomuser.me/api/portaits/women/42.jpg
         return (
             <List.Item >
-                <Image as='a' size='mini' circular src={attendee.photoUrl}/>
+                <Image as='a' size='mini' circular src={attendee.photoUrl || attendee.photoURL}/>
                                                         {/* https://randomuser.me/api/portaits/women/42.jpg */}
             </List.Item>
         )
