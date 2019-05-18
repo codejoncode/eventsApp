@@ -18,7 +18,6 @@ class DateInput extends Component {
     } = this.props; 
     let newValue;
     if (value) {
-      console.log(value)
       newValue = moment(value, 'X')
     }
   return (

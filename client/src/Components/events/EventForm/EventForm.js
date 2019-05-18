@@ -1,7 +1,7 @@
 /*global google*/
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
+import { withFirestore } from 'react-redux-firebase';
 import { reduxForm, Field } from "redux-form";
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Script  from "react-load-script"
@@ -11,10 +11,9 @@ import {
   isRequired,
   hasLengthGreaterThan
 } from "revalidate";
-// import cuid from "cuid";
+
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
-import { createEvent, updateEvent } from "../EventList/eventActions";
-// import defaultPhoto from "../../../Images/user.png";
+import { createEvent, updateEvent, cancelToggle } from "../EventList/eventActions";
 import TextInput from "../../common/form/TextInput";
 import TextArea from "../../common/form/TextArea";
 import SelectInput from "../../common/form/SelectInput";
@@ -22,23 +21,24 @@ import DateInput from "../../common/form/DateInput";
 import PlaceInput from "../../common/form/PlaceInput";
 
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
-const mapState = (state, ownProps) => {
-  const eventId = ownProps.match.params.id;
+const mapState = (state) => {
 
-  let event = {}; //Redux forms takes care of the property names needed for the event
-
-  if (eventId && state.events.length > 0) {
-    event = state.events.filter(event => event.id === eventId)[0]; // filter returns an array
+  let event = {}; // an empty event will not thrown an error.
+  
+  if (state.firestore.ordered.event && state.firestore.ordered.event[0]) {
+    event = state.firestore.ordered.event[0];
   }
-
+  //need to use key initialValues for the form. 
   return {
-    initialValues: event // will return the data for when a user clicks on manage event
+    initialValues: event,
+    event
   };
 };
 
 const actions = {
   createEvent,
-  updateEvent
+  updateEvent,
+  cancelToggle,
 };
 
 const category = [
@@ -68,6 +68,16 @@ class EventForm extends Component {
     venueLatLng: {},
     scriptLoaded: false
   }
+  async componentDidMount () {
+    const {firestore, match} = this.props;
+    await firestore.setListener(`event/${match.params.id}`);
+  }
+
+  async componentWillUnmount () {
+    /*this is will make it so that the listener is not still open once we leave the page */
+    const {firestore, match} = this.props;
+    await firestore.unsetListener(`event/${match.params.id}`);
+  }
   
   handleCitySelect = (selectedCity) => {
     geocodeByAddress(selectedCity)
@@ -96,9 +106,11 @@ class EventForm extends Component {
   }
 
   onFormSubmit = values => {
-    values.date = moment(values.date).format();
     values.venueLatLng = this.state.venueLatLng;
     if (this.props.initialValues.id) {
+      if(Object.keys(values.venueLatLng).length === 0){
+        values.venueLatLng = this.props.event.venueLatLng; 
+      }
       this.props.updateEvent(values);
       this.props.history.goBack();
     } else {
@@ -110,7 +122,7 @@ class EventForm extends Component {
   handleScriptLoaded = () => this.setState({scriptLoaded: true});
 
   render() {
-    const { invalid, submitting, pristine } = this.props;
+    const { invalid, submitting, pristine, event, cancelToggle } = this.props;
     return (
       <Grid>
         <Script 
@@ -185,6 +197,13 @@ class EventForm extends Component {
               <Button onClick={this.props.history.goBack} type="button">
                 Cancel
               </Button>
+              <Button
+               onClick = {() => cancelToggle(!event.cancelled, event.id)}
+               type='button'
+               color={event.cancelled ? 'green' : 'red'}
+               floated = 'right'
+               content = {event.cancelled ? 'Reactivate Event' : 'Cancel event'}
+              />
             </Form>
           </Segment>
         </Grid.Column>
@@ -193,11 +212,11 @@ class EventForm extends Component {
   }
 }
 //adding in another higher order component
-export default connect(
+export default withFirestore(connect(
   mapState,
   actions
 )(
   reduxForm({ form: "eventForm", enableReinitialize: true, validate })(
     EventForm
-  )
+  ))
 );
