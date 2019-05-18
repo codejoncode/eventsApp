@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withFirestore } from "react-redux-firebase";
+import { withFirestore, authIsReady } from "react-redux-firebase";
 import { toastr } from 'react-redux-toastr';
 import { Grid } from "semantic-ui-react";
 import EventDetailedHeader from "./EventDetailedHeader";
@@ -19,7 +19,8 @@ const mapState = (state) => {
   }
 
   return {
-    event
+    event,
+    auth: state.firebase.auth
   };
 };
 
@@ -37,13 +38,14 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const { event } = this.props;
+    const { event, auth } = this.props;
     const attendees = event && event.attendees && objectToArray(event.attendees);
-
+    const isHost = event.hostUid === auth.uid; 
+    const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventDetailedHeader event={event} />
+          <EventDetailedHeader event={event} isHost = {isHost} isGoing = {isGoing}/>
           <EventDetailedInfo event={event} />
           <EventDetailedChat />
         </Grid.Column>
