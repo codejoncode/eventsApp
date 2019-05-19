@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
-import { Grid } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import EventList from "../EventList/EventList.js";
 import { getEventsForDashboard } from "../EventList/eventActions";
 
@@ -19,9 +19,31 @@ const actions = {
 }; // passed done to connect to be aprt of props.
 
 class EventDashboard extends Component {
+  state ={
+    moreEvents: false 
+  }
+ async componentDidMount() {
+    let next = await this.props.getEventsForDashboard(); // contains query snapshot
+    console.log(next);
+    //currently have a limit of limit of 2
+    if( next && next.docs && next.docs.length > 1 ){
+      this.setState({
+        moreEvents: true
+      })
+    }
+  }
 
-  componentDidMount() {
-    this.props.getEventsForDashboard(); 
+  getNextEvents = async () => {
+    const {events} = this.props; 
+    let lastEvent = events && events[events.length - 1];
+    console.log(lastEvent);
+    let next = await this.props.getEventsForDashboard(lastEvent);
+    console.log(next); 
+    if( next && next.docs && next.docs.length <= 1 ){
+      this.setState({
+        moreEvents: false
+      })
+    }
   }
 
   handleDeleteEvent = eventId => () => {
@@ -35,6 +57,7 @@ class EventDashboard extends Component {
       <Grid>
         <Grid.Column width={10}>
           <EventList  events={events} />
+          <Button onClick={this.getNextEvents} disabled={!this.state.moreEvents} content = 'More' color='green' floated='right'/> 
         </Grid.Column>
         <Grid.Column width={6}>
           <EventActivity />
