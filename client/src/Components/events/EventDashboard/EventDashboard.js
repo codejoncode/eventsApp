@@ -20,7 +20,8 @@ const actions = {
 
 class EventDashboard extends Component {
   state ={
-    moreEvents: false 
+    moreEvents: false,
+    loadingInitial: true
   }
  async componentDidMount() {
     let next = await this.props.getEventsForDashboard(); // contains query snapshot
@@ -28,7 +29,8 @@ class EventDashboard extends Component {
     //currently have a limit of limit of 2
     if( next && next.docs && next.docs.length > 1 ){
       this.setState({
-        moreEvents: true
+        moreEvents: true,
+        loadingInitial: false,
       })
     }
   }
@@ -52,12 +54,12 @@ class EventDashboard extends Component {
 
   render() {
     const { events, loading } = this.props;
-    if (loading ) return <LoadingComponent inverted={true} />; //the inverted turns the color light if true if note on the component it will be dark.
+    if (this.state.loadingInitial ) return <LoadingComponent inverted={true} />; //the inverted turns the color light if true if note on the component it will be dark.
     return (
       <Grid>
         <Grid.Column width={10}>
           <EventList  events={events} />
-          <Button onClick={this.getNextEvents} disabled={!this.state.moreEvents} content = 'More' color='green' floated='right'/> 
+          <Button loading={loading} onClick={this.getNextEvents} disabled={!this.state.moreEvents} content = 'More' color='green' floated='right'/> 
         </Grid.Column>
         <Grid.Column width={6}>
           <EventActivity />
