@@ -25,7 +25,8 @@ import { CREATE_EVENT, DELETE_EVENT, UPDATE_EVENT, FETCH_EVENTS } from './eventC
   };
 
   export const fetchEvents = (state, payload) => {
-      return payload.events // returns {events : [...events here in array as objects]}
+      //return payload.events // returns {events : [...events here in array as objects]}
+      return payload
   }
 
 

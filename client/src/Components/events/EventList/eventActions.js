@@ -12,13 +12,13 @@ import {
 import { fetchSampleData } from "../../../data/mockApi";
 import { createNewEvent } from '../../common/util/helpers';
 import moment from 'moment'; 
-
-export const fetchEvents = events => {
-  return {
-    type: FETCH_EVENTS,
-    payload: events
-  };
-};
+import firebase from '../../../config/firebase';
+// export const fetchEvents = events => {
+//   return {
+//     type: FETCH_EVENTS,
+//     payload: events
+//   };
+// };
 
 export const createEvent = event => {
   return async (dispatch, getState, {getFirestore}) => {
@@ -59,21 +59,7 @@ export const updateEvent = event => {
   };
 };
 
-export const deleteEvent = eventId => {
-  return async dispatch => {
-    try {
-      dispatch({
-        type: DELETE_EVENT,
-        payload: {
-          eventId
-        }
-      });
-      toastr.success("Success!", "Event has been deleted");
-    } catch (error) {
-      toastr.error("Oops", "Something went wrong");
-    }
-  };
-};
+
 
 export const cancelToggle = (cancelled, eventId) => 
   async (dispatch, getState, {getFirestore}) => {
@@ -90,16 +76,24 @@ export const cancelToggle = (cancelled, eventId) =>
     }
   }
 
-export const loadEvents = () => {
-  return async dispatch => {
-    try {
-      dispatch(asyncActionStart());
-      let events = await fetchSampleData();
-      dispatch(fetchEvents(events));
-      dispatch(asyncActionFinish());
-    } catch (error) {
-      console.log(error);
-      dispatch(asynActionError());
+  export const getEventsForDashboard = () => 
+    async (dispatch, getState) => {
+      let today = new Date(Date.now());
+      const firestore = firebase.firestore();
+      const eventsQuery = firestore.collection('events').where('date','>=', today); 
+      console.log(eventsQuery)
+      try {
+        dispatch(asyncActionStart())
+        let querySnap = await eventsQuery.get()
+        let events = []; 
+        for (let i = 0; i< querySnap.docs.length; i++){
+          let evt = {...querySnap.docs[i].data(), id: querySnap.docs[i].id};
+          events.push(evt); 
+        }
+        dispatch({type: FETCH_EVENTS, payload: events})
+        dispatch(asyncActionFinish())
+      } catch (error) {
+        console.log(error)
+        dispatch(asynActionError())
+      }
     }
-  };
-};

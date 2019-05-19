@@ -123,6 +123,7 @@ class EventForm extends Component {
 
   render() {
     const { invalid, submitting, pristine, event, cancelToggle } = this.props;
+    
     return (
       <Grid>
         <Script 
