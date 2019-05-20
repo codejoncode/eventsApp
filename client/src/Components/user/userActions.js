@@ -1,12 +1,13 @@
 import moment from "moment";
 import { toastr } from "react-redux-toastr";
+import firebase from "../../config/firebase";
 import cuid from "cuid";
 import {
   asynActionError,
   asyncActionFinish,
   asyncActionStart
 } from "../async/asyncActions";
-import imagesObject  from '../../Images/imagesObject';
+import imagesObject from "../../Images/imagesObject";
 
 export const updateProfile = user => async (
   dispatch,
@@ -131,7 +132,7 @@ export const goingToEvent = event => async (
   const attendee = {
     going: true,
     joinDate: Date.now(),
-    photoURL : photoURL || imagesObject.user,
+    photoURL: photoURL || imagesObject.user,
     displayName: displayName,
     host: false
   };
@@ -170,6 +171,53 @@ export const cancelGoingToEvent = event => async (
   } catch (error) {
     console.log(error);
     toastr.error("Oops", "Something went wrong");
+  }
+};
+
+export const getUserEvents = (useruid, activeTab) => async (
+  dispatch,
+  getState
+) => {
+  dispatch(asyncActionStart());
+  const firestore = firebase.firestore();
+  const today = new Date(Date.now());
+  let eventsRef = firestore.collection("event_attendee");
+  let query;
+
+  switch (activeTab) {
+    case 1: // past events
+      query = eventsRef
+        .where("userUid", "==", useruid)
+        .where("eventDate", "<=", today)
+        .orderBy("eventDate", "desc"); // most recent event first
+      break;
+    case 2: //future events
+      query = eventsRef
+        .where("userUid", "==", useruid)
+        .where("eventDate", ">=", today)
+        .orderBy("eventDate");
+      break;
+    case 3: // hosted events
+      query = eventsRef
+        .where("userUid", "==", useruid)
+        .where("host", "==", true)
+        .orderBy("eventDate", "desc");
+      break;
+    default:
+      //all the events
+      query = eventsRef
+        .where("userUid", "==", useruid)
+        .orderBy("eventDate", "desc");
+  }
+
+  try {
+    let querySnap = await query.get();
+
+    console.log(querySnap);
+    dispatch(asyncActionFinish());
+  } catch (error) {
+    console.log(error);
+    dispatch(asynActionError());
   }
 };
 

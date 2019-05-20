@@ -20,6 +20,7 @@ import firebase from "../../../config/firebase";
 //   };
 // };
 
+
 export const createEvent = event => {
   return async (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
