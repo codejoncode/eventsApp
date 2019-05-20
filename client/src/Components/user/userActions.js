@@ -2,6 +2,7 @@ import moment from "moment";
 import { toastr } from "react-redux-toastr";
 import firebase from "../../config/firebase";
 import cuid from "cuid";
+import { FETCH_EVENTS } from '../events/EventList/eventConstants';
 import {
   asynActionError,
   asyncActionFinish,
@@ -212,8 +213,17 @@ export const getUserEvents = (useruid, activeTab) => async (
 
   try {
     let querySnap = await query.get();
+    let events = []; 
+    
+    console.log(typeof querySnap.docs[5].data().eventId)
+    for(let i = 0; i < querySnap.docs.length; i++){
+      console.log(i);
+      let evt = await firestore.collection('events').doc(querySnap.docs[i].data().eventId).get();
+      events.push({...evt.data(), id: evt.id});
+    }
 
-    console.log(querySnap);
+    dispatch({type: FETCH_EVENTS, payload : {events}})
+
     dispatch(asyncActionFinish());
   } catch (error) {
     console.log(error);
