@@ -215,10 +215,13 @@ export const getUserEvents = (useruid, activeTab) => async (
     let querySnap = await query.get();
     let events = []; 
     
-    console.log(typeof querySnap.docs[5].data().eventId)
-    for(let i = 0; i < querySnap.docs.length; i++){
+    console.log(typeof querySnap.docs[4].data())
+    console.log(querySnap.docs[4].data())
+    console.log(querySnap)
+
+    for(let i = 5; i < querySnap.docs.length; i++){
       console.log(i);
-      let evt = await firestore.collection('events').doc(querySnap.docs[i].data().eventId).get();
+      let evt = await firestore.collection('events').doc(querySnap.docs[i].data().eventId ).get();
       events.push({...evt.data(), id: evt.id});
     }
 
