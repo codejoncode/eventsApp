@@ -15,6 +15,7 @@ import ModalManager from '../Components/modals/ModalManager'
 
 class App extends Component {
   render() {
+    console.log(this.props)
     return (
       <div>
         <ModalManager />
@@ -38,6 +39,7 @@ class App extends Component {
                   <Route path="/profile/:id" component={UserDetailedPage} />
                   <Route path="/settings" component={SettingsDashboard} />
                   <Route path="/createEvent" component={EventForm} />
+                  <Route path="/:id"  component = {HomePage} />
                   
                 </Switch>
               </Container>
