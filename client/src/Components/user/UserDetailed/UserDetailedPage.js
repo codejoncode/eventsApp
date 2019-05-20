@@ -30,6 +30,8 @@ const mapState = (state, ownProps) => {
   profile,
   photos: state.firestore.ordered.photos,
   requesting: state.firestore.status.requesting,
+  events : state.events.events,
+  eventsLoading: state.async.loading,
   }
 };
 
@@ -40,16 +42,20 @@ const actions = {
 class UserDetailedPage extends Component {
   
   async componentDidMount () {
-    let events = await this.props.getUserEvents(this.props.userUid, 1);
+    // console.log(this.props.userUid) // received 
+    let events = await this.props.getUserEvents(this.props.userUid);
+    events = this.props.events
     console.log(events);
+
   }
 
   render() {
-    const { profile, photos, auth, match, requesting } = this.props;
+    const { profile, photos, auth, match, requesting , events , eventsLoading} = this.props;
     const isCurrentUser = auth.uid === match.params.id; 
-    const loading = Object.values(requesting).some(a => a === true); 
+    // console.log(requesting);
+    // const loading = Object.values(requesting).some(a => a === true); 
 
-    if ( loading ) return <LoadingComponent  inverted={true}/>
+    // if ( loading ) return <LoadingComponent  inverted={true}/>
 
     return (
       <Grid>
@@ -64,7 +70,7 @@ class UserDetailedPage extends Component {
         </Grid.Column>
         <UserDetailedSidebar isCurrentUser = {isCurrentUser}/>
         {photos && photos.length > 0 && <UserDetailedPhotos photos={photos} />}
-        <UserDetailedEvents />
+        <UserDetailedEvents  events = {events} eventsLoading = {eventsLoading}/>
       </Grid>
     );
   }
