@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withFirestore } from "react-redux-firebase";
+import { withFirestore, firebaseConnect, isEmpty } from "react-redux-firebase";
+import { compose } from "redux";
 import { Grid } from "semantic-ui-react";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
@@ -8,24 +9,31 @@ import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
 import { objectToArray } from "../../common/util/helpers";
 import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
-
+import { addEventComment } from "../EventList/eventActions";
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
-const mapState = state => {
+const mapState = (state, ownProps) => {
   let event = {}; // an empty event will not thrown an error.
 
   if (state.firestore.ordered.events && state.firestore.ordered.events[0]) {
     event = state.firestore.ordered.events[0];
   }
+  let eventChat; 
+  // data available check
+  if (state.firebase.data.event_chat && !isEmpty(state.firebase.data.event_chat) ){
+    eventChat = objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])//filter out the chats for the id of the event
+  }
 
   return {
     event,
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    eventChat,
   };
 };
 
 const actions = {
   goingToEvent,
-  cancelGoingToEvent
+  cancelGoingToEvent,
+  addEventComment
 };
 
 class EventDetailedPage extends Component {
@@ -44,7 +52,14 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const { event, auth, goingToEvent, cancelGoingToEvent } = this.props;
+    const {
+      event,
+      auth,
+      goingToEvent,
+      cancelGoingToEvent,
+      addEventComment,
+      eventChat
+    } = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
     const isHost = event.hostUid === auth.uid;
@@ -61,7 +76,11 @@ class EventDetailedPage extends Component {
             cancelGoingToEvent={cancelGoingToEvent}
           />
           <EventDetailedInfo event={event} />
-          <EventDetailedChat />
+          <EventDetailedChat
+            eventChat={eventChat}
+            addEventComment={addEventComment}
+            eventId={event.id}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />
@@ -71,9 +90,11 @@ class EventDetailedPage extends Component {
   }
 }
 
-export default withFirestore(
+export default compose(
+  withFirestore,
   connect(
     mapState,
     actions
-  )(EventDetailedPage)
-);
+  ),
+  firebaseConnect(props => [`event_chat/${props.match.params.id}`])
+)(EventDetailedPage);

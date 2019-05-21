@@ -1,7 +1,7 @@
 import { toastr } from "react-redux-toastr";
 import {
   // CREATE_EVENT,
-  DELETE_EVENT,
+  // DELETE_EVENT,
   FETCH_EVENTS
 } from "./eventConstants";
 import {
@@ -9,7 +9,7 @@ import {
   asyncActionFinish,
   asynActionError
 } from "../../async/asyncActions";
-import { fetchSampleData } from "../../../data/mockApi";
+// import { fetchSampleData } from "../../../data/mockApi";
 import { createNewEvent } from "../../common/util/helpers";
 import moment from "moment";
 import firebase from "../../../config/firebase";
@@ -19,6 +19,7 @@ import firebase from "../../../config/firebase";
 //     payload: events
 //   };
 // };
+import imagesObject from '../../../Images/imagesObject';
 
 
 export const createEvent = event => {
@@ -129,3 +130,25 @@ export const getEventsForDashboard = lastEvent => async (
     dispatch(asynActionError());
   }
 };
+
+
+export const addEventComment = (eventId, values) => 
+  async (dispatch, getState, {getFirebase}) => {
+    const firebase = getFirebase();
+    const profile = getState().firebase.profile; 
+    const {displayName, photoURL} = profile; 
+    const uid = firebase.auth().currentUser.uid; 
+    let newComment = {
+      displayName,
+      photoURL: photoURL || imagesObject.user,
+      uid,
+      text: values.comment,
+      date: Date.now()
+    }
+    try {
+      await firebase.push(`event_chat/${eventId}`,newComment)
+    } catch (error){
+      console.log(error);
+      toastr.error('Oops', 'Problem adding comment')
+    }
+  }
