@@ -1,11 +1,14 @@
-import React from "react";
+import React, {Component} from "react";
 import { Segment, Header, Comment, Form, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import distanceInWords from "date-fns/distance_in_words";
 import userImage from "../../../Images/user.png";
 import EventDetailedChatForm from "./EventDetailedChatForm";
 
-const EventDetailedChat = ({ addEventComment, eventId, eventChat }) => {
+class EventDetailedChat extends Component {
+  render() {
+    const { addEventComment, eventId, eventChat } = this.props; 
+
   return (
     <div>
       <Segment
@@ -47,5 +50,6 @@ const EventDetailedChat = ({ addEventComment, eventId, eventChat }) => {
     </div>
   );
 };
+}
 
 export default EventDetailedChat;
