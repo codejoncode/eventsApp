@@ -7,7 +7,7 @@ import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
-import { objectToArray } from "../../common/util/helpers";
+import { objectToArray, createDataTree } from "../../common/util/helpers";
 import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 import { addEventComment } from "../EventList/eventActions";
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
@@ -64,7 +64,7 @@ class EventDetailedPage extends Component {
       event && event.attendees && objectToArray(event.attendees);
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
-
+    const chatTree = !isEmpty(eventChat) && createDataTree(eventChat); // turns the data into a tree where parents will have children (replies)
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -77,7 +77,7 @@ class EventDetailedPage extends Component {
           />
           <EventDetailedInfo event={event} />
           <EventDetailedChat
-            eventChat={eventChat}
+            eventChat={chatTree}
             addEventComment={addEventComment}
             eventId={event.id}
           />
