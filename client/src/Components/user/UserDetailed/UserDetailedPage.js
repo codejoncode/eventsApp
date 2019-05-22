@@ -10,7 +10,7 @@ import UserDetailedPhotos from "./UserDetailedPhotos";
 import UserDetailedEvents from "./UserDetailedEvents";
 import { userDetailedQuery } from '../userQueries';
 import UserDetailedSidebar from './UserDetailedSidebar';
-import LoadingComponent from '../../layout/LoadingComponent';
+// import LoadingComponent from '../../layout/LoadingComponent';
 import {getUserEvents} from '../userActions'
 
 const mapState = (state, ownProps) => {
@@ -43,9 +43,9 @@ class UserDetailedPage extends Component {
   
   async componentDidMount () {
     // console.log(this.props.userUid) // received 
-    let events = await this.props.getUserEvents(this.props.userUid);
-    events = this.props.events
-    console.log(events);
+    await this.props.getUserEvents(this.props.userUid);
+    
+    
 
   }
 
@@ -56,7 +56,7 @@ class UserDetailedPage extends Component {
   }
 
   render() {
-    const { profile, photos, auth, match, requesting , events , eventsLoading} = this.props;
+    const { profile, photos, auth, match, events , eventsLoading} = this.props; //requesting 
     const isCurrentUser = auth.uid === match.params.id; 
     // console.log(requesting);
     // const loading = Object.values(requesting).some(a => a === true); 

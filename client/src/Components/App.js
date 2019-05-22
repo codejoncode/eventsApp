@@ -15,7 +15,6 @@ import ModalManager from '../Components/modals/ModalManager'
 
 class App extends Component {
   render() {
-    console.log(this.props)
     return (
       <div>
         <ModalManager />

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
+import { firestoreConnect } from "react-redux-firebase";
 import { Grid, Loader } from "semantic-ui-react";
 import EventList from "../EventList/EventList.js";
 import { getEventsForDashboard } from "../EventList/eventActions";
@@ -26,7 +26,6 @@ class EventDashboard extends Component {
   }
  async componentDidMount() {
     let next = await this.props.getEventsForDashboard(); // contains query snapshot
-    console.log(next);
     //currently have a limit of limit of 2
     if( next && next.docs && next.docs.length > 1 ){
       this.setState({
@@ -47,9 +46,7 @@ class EventDashboard extends Component {
   getNextEvents = async () => {
     const {events} = this.props; 
     let lastEvent = events && events[events.length - 1];
-    console.log(lastEvent);
     let next = await this.props.getEventsForDashboard(lastEvent);
-    console.log(next); 
     if( next && next.docs && next.docs.length <= 1 ){
       this.setState({
         moreEvents: false
@@ -65,7 +62,7 @@ class EventDashboard extends Component {
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList  events={loadedEvents} events = {loadedEvents} loading = {loading} moreEvents ={moreEvents} getNextEvents = {this.getNextEvents}/>
+          <EventList  events = {loadedEvents} loading = {loading} moreEvents ={moreEvents} getNextEvents = {this.getNextEvents}/>
           
         </Grid.Column>
         <Grid.Column width={6}>
