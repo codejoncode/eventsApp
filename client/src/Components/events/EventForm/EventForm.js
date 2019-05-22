@@ -119,6 +119,8 @@ class EventForm extends Component {
       this.props.history.push("/events");
     }
   };
+
+
   handleScriptLoaded = () => this.setState({scriptLoaded: true});
 
   render() {

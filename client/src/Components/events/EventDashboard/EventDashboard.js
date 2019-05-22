@@ -8,9 +8,19 @@ import { getEventsForDashboard } from "../EventList/eventActions";
 import LoadingComponent from "../../layout/LoadingComponent";
 import EventActivity from "../EventActivity/EventActivity";
 
+const query = [
+  {
+    collection: 'activity',
+    orderBy: ['timestamp', 'desc'], // newest activity first
+    limit: 5,
+
+  }
+]
+
 const mapState = state => ({
   events: state.events,
-  loading: state.async.loading
+  loading: state.async.loading, 
+  activities: state.firestore.ordered.activity
  
 });
 
@@ -56,7 +66,7 @@ class EventDashboard extends Component {
 
 
   render() {
-    const {  loading } = this.props;
+    const {  loading, activities } = this.props;
     const { loadedEvents, loadingInitial, moreEvents} = this.state; 
     if (loadingInitial ) return <LoadingComponent inverted={true} />; //the inverted turns the color light if true if note on the component it will be dark.
     return (
@@ -66,7 +76,7 @@ class EventDashboard extends Component {
           
         </Grid.Column>
         <Grid.Column width={6}>
-          <EventActivity />
+          <EventActivity activities = {activities}/>
         </Grid.Column>
         <Grid.Column width = {10}>
           <Loader active={loading}/>
@@ -78,5 +88,5 @@ class EventDashboard extends Component {
 export default connect(
   mapState,
   actions
-)(firestoreConnect([{ collection: "events" }])(EventDashboard));
+)(firestoreConnect(query)(EventDashboard));
 //we don't have to get the event we are listening for the event. 
