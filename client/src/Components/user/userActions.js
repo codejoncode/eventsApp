@@ -230,4 +230,28 @@ export const getUserEvents = (useruid, activeTab) => async (
   }
 };
 
+export const followUser = userToFollow => async (dispatch, getState, {getFirestore}) => {
+  const firestore = getFirestore();
+  const user = firestore.auth().currentUser;
+  const following = {
+    photoURL: userToFollow.photoURL || imagesObject.user,
+    city: userToFollow.city || 'Unknown City', //incase the user have not updated this in their profile yet
+    displayName: userToFollow.displayName
+  }
+
+  try {
+    await firestore.set(
+      {
+        collection: 'users',
+        doc: user.uid,
+        subcollections: [{ collection: 'following', doc: userToFollow.id }]
+      },
+      following
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 //No need for a reducer we will use firebase and its created  consts and reducers.

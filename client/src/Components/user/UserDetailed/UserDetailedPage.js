@@ -11,7 +11,7 @@ import UserDetailedEvents from "./UserDetailedEvents";
 import { userDetailedQuery } from '../userQueries';
 import UserDetailedSidebar from './UserDetailedSidebar';
 // import LoadingComponent from '../../layout/LoadingComponent';
-import {getUserEvents} from '../userActions'
+import {getUserEvents, followUser} from '../userActions'
 
 const mapState = (state, ownProps) => {
   let userUid = null; 
@@ -37,6 +37,7 @@ const mapState = (state, ownProps) => {
 
 const actions = {
   getUserEvents,
+  followUser,
 }
 
 class UserDetailedPage extends Component {
@@ -56,7 +57,7 @@ class UserDetailedPage extends Component {
   }
 
   render() {
-    const { profile, photos, auth, match, events , eventsLoading} = this.props; //requesting 
+    const { profile, photos, auth, match, events , eventsLoading, followUser} = this.props; //requesting 
     const isCurrentUser = auth.uid === match.params.id; 
     // console.log(requesting);
     // const loading = Object.values(requesting).some(a => a === true); 
@@ -74,7 +75,7 @@ class UserDetailedPage extends Component {
             </Grid>
           </Segment>
         </Grid.Column>
-        <UserDetailedSidebar isCurrentUser = {isCurrentUser}/>
+        <UserDetailedSidebar isCurrentUser = {isCurrentUser} followUser = {followUser} profile = {profile}/>
         {photos && photos.length > 0 && <UserDetailedPhotos photos={photos} />}
         <UserDetailedEvents changeTab ={this.changeTab} events = {events} eventsLoading = {eventsLoading}/>
       </Grid>
