@@ -254,4 +254,20 @@ export const followUser = userToFollow => async (dispatch, getState, {getFiresto
 
 }
 
+export const unfollowUser = (userToUnfollow) =>
+  // console.log(userToUnfollow)
+  async (dispatch, getState, {getFirestore}) => {
+    const firestore = getFirestore();
+    const user = firestore.auth().currentUser;
+    try {
+      await firestore.delete({
+        collection: 'users',
+        doc: user.uid,
+        subcollections: [{collection: 'following', doc: userToUnfollow.id}]
+      })
+    } catch (error){
+      console.log(error); 
+    }
+  }
+
 //No need for a reducer we will use firebase and its created  consts and reducers.

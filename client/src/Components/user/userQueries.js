@@ -1,4 +1,4 @@
-export const userDetailedQuery = ({ auth, userUid }) => {
+export const userDetailedQuery = ({ auth, userUid, match }) => {
     if (userUid !== null){
         //get another profile 
         return [
@@ -12,6 +12,12 @@ export const userDetailedQuery = ({ auth, userUid }) => {
                 doc: userUid,
                 subcollections: [{collection: 'photos'}],
                 storeAs: 'photos'
+            },
+            {
+                collection: 'users',
+                doc: auth.uid, //user logged in looking at another profile
+                subcollections: [{collection: 'following', doc: match.params.id}],
+                storeAs: 'following'
             }
         ]
     } else {

@@ -74,3 +74,53 @@ exports.cancelActivity = functions.firestore
         return console.log("Error adding activity", error);
       });
   });
+
+exports.userFollowing = functions.firestore 
+  .document('users/{followerUid}/following/{followingUid}') // in the users  the current user followerUid  and following is the collection of who we want to follow which is followingUid
+  .onCreate((event, context) => {
+    console.log("version 1");
+    const followerUid = context.params.followerUid;
+    const followingUid = context.params.followingUid;
+
+    const followerDoc = admin
+      .firestore()
+      .collection('users')
+      .doc(followerUid);
+
+      console.log(followerDoc);
+
+      return followerDoc.get().then(doc => {
+        let userData = doc.data();
+        console.log({ userData });
+        let follower = {
+          displayName: userData.displayName,
+          photoURL: userData.photoURL || '../src/Images/user.png',
+          city: userData.city || 'unknown city'
+        };
+        return admin
+          .firestore()
+          .collection('users')
+          .doc(followingUid)
+          .collection('followers')
+          .doc(followerUid)
+          .set(follower);
+      });
+  });
+
+exports.unfollowUser = functions.firestore
+  .document('users/{followerUid}/following/{followingUid}')
+  .onDelete((event, context) => {
+    return admin
+      .firestore()
+      .collection('users')
+      .doc(context.params.followingUid) // one we want to delete
+      .collection('followers')
+      .doc(context.params.followerUid)
+      .delete()
+      .then(() => {
+        return console.log('doc deleted');
+      })
+      .catch(err => {
+        return console.log(err);
+      })
+  })
