@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Image} from "semantic-ui-react";
 import {Link} from 'react-router-dom';
-import imageObject from '../../../Images/imagesObject'
+
 const PersonCard = ({user}) => {
     return (
         <Card as={Link} to={`profile/${user.id}`}>
