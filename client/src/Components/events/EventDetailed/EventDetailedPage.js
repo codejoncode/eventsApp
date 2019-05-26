@@ -27,6 +27,7 @@ const mapState = (state, ownProps) => {
     event,
     auth: state.firebase.auth,
     eventChat,
+    loading : state.async.loading,
   };
 };
 
@@ -58,7 +59,8 @@ class EventDetailedPage extends Component {
       goingToEvent,
       cancelGoingToEvent,
       addEventComment,
-      eventChat
+      eventChat,
+      loading
     } = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
@@ -69,6 +71,7 @@ class EventDetailedPage extends Component {
       <Grid>
         <Grid.Column width={10}>
           <EventDetailedHeader
+            loading = {loading}
             event={event}
             isHost={isHost}
             isGoing={isGoing}

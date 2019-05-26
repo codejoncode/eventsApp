@@ -34,7 +34,8 @@ const mapState = (state, ownProps) => {
     requesting: state.firestore.status.requesting,
     events: state.events.events,
     eventsLoading: state.async.loading,
-    following: state.firestore.ordered.following
+    following: state.firestore.ordered.following,
+    loading : state.async.loading,
   };
 };
 
@@ -64,7 +65,7 @@ class UserDetailedPage extends Component {
       eventsLoading,
       followUser,
       following, 
-      unfollowUser
+      unfollowUser,
     } = this.props; //requesting
     const isCurrentUser = auth.uid === match.params.id;
     const isFollowing = !isEmpty(following);
