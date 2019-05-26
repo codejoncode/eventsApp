@@ -7,20 +7,20 @@ import {
 import {
   asyncActionStart,
   asyncActionFinish,
-  asynActionError
+  asyncActionError
 } from "../../async/asyncActions";
 // import { fetchSampleData } from "../../../data/mockApi";
 import { createNewEvent } from "../../common/util/helpers";
 import moment from "moment";
 import firebase from "../../../config/firebase";
+import compareAsc from "date-fns/compare_asc";
 // export const fetchEvents = events => {
 //   return {
 //     type: FETCH_EVENTS,
 //     payload: events
 //   };
 // };
-import imagesObject from '../../../Images/imagesObject';
-
+import imagesObject from "../../../Images/imagesObject";
 
 export const createEvent = event => {
   return async (dispatch, getState, { getFirestore }) => {
@@ -46,16 +46,49 @@ export const createEvent = event => {
 };
 
 export const updateEvent = event => {
-  return async (dispatch, getState, { getFirestore }) => {
-    const firestore = getFirestore();
+  return async (dispatch, getState) => {
+    dispatch(asyncActionStart());
+    const firestore = firebase.firestore();
     if (event.date !== getState().firestore.ordered.events[0].date) {
       //this checks prevents a reset to 1970
       event.date = moment(event.date).toDate();
     }
     try {
-      await firestore.update(`events/${event.id}`, event);
+      let eventDocRef = firestore.collection("events").doc(event.id);
+      let dateEqual = compareAsc(
+        getState().firestore.ordered.events[0].date.toDate(), //toDate needed for successful comparision
+        event.date
+      ); // workds like C programming compare  0 1 or -1
+      if (dateEqual !== 0) {
+        let batch = firestore.batch();
+        await batch.update(eventDocRef, event);
+
+        let eventAttendeeRef = firestore.collection("event_attendee");
+        let eventAttendeeQuery = await eventAttendeeRef.where(
+          "eventId",
+          "==",
+          event.id
+        );
+        let eventAttendeeQuerySnap = await eventAttendeeQuery.get();
+
+        for (let i = 0; i < eventAttendeeQuerySnap.docs.length; i++) {
+          let eventAttendeeDocRef = await firestore
+            .collection("event_attendee")
+            .doc(eventAttendeeQuerySnap.docs[i].id);
+
+          await batch.update(eventAttendeeDocRef, {
+            eventDate: event.date
+          });
+        }
+        await batch.commit();
+      } else {
+        await eventDocRef.update(event);
+      }
+
+      dispatch(asyncActionFinish());
       toastr.success("Success!", "Event has been updated");
     } catch (error) {
+      dispatch(asyncActionError());
       toastr.error("Oops", "Something went wrong");
     }
   };
@@ -112,9 +145,9 @@ export const getEventsForDashboard = lastEvent => async (
 
     let querySnap = await query.get();
 
-    if (querySnap.docs.length === 0 ){
-      dispatch(asyncActionFinish())
-      return; 
+    if (querySnap.docs.length === 0) {
+      dispatch(asyncActionFinish());
+      return;
     }
 
     let events = [];
@@ -124,32 +157,34 @@ export const getEventsForDashboard = lastEvent => async (
     }
     dispatch({ type: FETCH_EVENTS, payload: events });
     dispatch(asyncActionFinish());
-    return querySnap; 
+    return querySnap;
   } catch (error) {
     console.log(error);
-    dispatch(asynActionError());
+    dispatch(asyncActionError ());
   }
 };
 
-
-export const addEventComment = (eventId, values, parentId) => 
-  async (dispatch, getState, {getFirebase}) => {
-    const firebase = getFirebase();
-    const profile = getState().firebase.profile; 
-    const {displayName, photoURL} = profile; 
-    const uid = firebase.auth().currentUser.uid; 
-    let newComment = {
-      parentId,
-      displayName,
-      photoURL: photoURL || imagesObject.user,
-      uid,
-      text: values.comment,
-      date: Date.now()
-    }
-    try {
-      await firebase.push(`event_chat/${eventId}`,newComment)
-    } catch (error){
-      console.log(error);
-      toastr.error('Oops', 'Problem adding comment')
-    }
+export const addEventComment = (eventId, values, parentId) => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+  const profile = getState().firebase.profile;
+  const { displayName, photoURL } = profile;
+  const uid = firebase.auth().currentUser.uid;
+  let newComment = {
+    parentId,
+    displayName,
+    photoURL: photoURL || imagesObject.user,
+    uid,
+    text: values.comment,
+    date: Date.now()
+  };
+  try {
+    await firebase.push(`event_chat/${eventId}`, newComment);
+  } catch (error) {
+    console.log(error);
+    toastr.error("Oops", "Problem adding comment");
   }
+};

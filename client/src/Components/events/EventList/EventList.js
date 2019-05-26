@@ -17,9 +17,9 @@ class EventList extends Component {
            hasMore={!loading && moreEvents}
            initialLoad={false}
           >
-            {events && events.map(event => (
+            {events && events.map((event, index) => (
               <EventListItem
-                key={event.id}
+                key={index}
                 event={event}
                 
               />

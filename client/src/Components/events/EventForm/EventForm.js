@@ -31,7 +31,8 @@ const mapState = (state) => {
   //need to use key initialValues for the form. 
   return {
     initialValues: event,
-    event
+    event,
+    loading: state.async.loading
   };
 };
 
@@ -105,13 +106,13 @@ class EventForm extends Component {
       })
   }
 
-  onFormSubmit = values => {
+  onFormSubmit = async values => {
     values.venueLatLng = this.state.venueLatLng;
     if (this.props.initialValues.id) {
       if(Object.keys(values.venueLatLng).length === 0){
         values.venueLatLng = this.props.event.venueLatLng; 
       }
-      this.props.updateEvent(values);
+      await this.props.updateEvent(values);
       this.props.history.goBack();
     } else {
       
@@ -124,7 +125,7 @@ class EventForm extends Component {
   handleScriptLoaded = () => this.setState({scriptLoaded: true});
 
   render() {
-    const { invalid, submitting, pristine, event, cancelToggle } = this.props;
+    const { invalid, submitting, pristine, event, cancelToggle, loading } = this.props;
     
     return (
       <Grid>
@@ -191,6 +192,7 @@ class EventForm extends Component {
                 placeholder="What is the date and time of the event?"
               />
               <Button
+                loading= {loading}
                 disabled={invalid || submitting || pristine}
                 positive
                 type="submit"
@@ -201,6 +203,7 @@ class EventForm extends Component {
                 Cancel
               </Button>
               <Button
+               disabled = {loading}
                onClick = {() => cancelToggle(!event.cancelled, event.id)}
                type='button'
                color={event.cancelled ? 'green' : 'red'}

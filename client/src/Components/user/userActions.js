@@ -4,7 +4,7 @@ import firebase from "../../config/firebase";
 import cuid from "cuid";
 import { FETCH_EVENTS } from '../events/EventList/eventConstants';
 import {
-  asynActionError,
+  asyncActionError ,
   asyncActionFinish,
   asyncActionStart
 } from "../async/asyncActions";
@@ -79,7 +79,7 @@ export const uploadProfileImage = (file, fileName) => async (
     dispatch(asyncActionFinish);
   } catch (error) {
     console.log(error);
-    dispatch(asynActionError);
+    dispatch(asyncActionError );
     throw new Error("Problem uploading photo");
   }
 };
@@ -151,7 +151,7 @@ export const setMainPhoto = photo => async (
     dispatch(asyncActionFinish());
   } catch (error) {
     console.log(error);
-    dispatch(asynActionError());
+    dispatch(asyncActionError ());
     throw new Error("Problem setting main photo");
   }
 };
@@ -261,7 +261,7 @@ export const getUserEvents = (useruid, activeTab) => async (
     dispatch(asyncActionFinish());
   } catch (error) {
     console.log(error);
-    dispatch(asynActionError());
+    dispatch(asyncActionError ());
   }
 };
 

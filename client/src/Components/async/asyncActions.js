@@ -16,7 +16,7 @@ export const asyncActionFinish = () => {
   };
 };
 
-export const asynActionError = () => {
+export const asyncActionError  = () => {
   return {
     type: ASYNC_ACTION_ERROR
   };
