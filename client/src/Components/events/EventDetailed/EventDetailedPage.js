@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toastr } from 'react-redux-toastr'
 import { withFirestore, firebaseConnect, isEmpty } from "react-redux-firebase";
 import { compose } from "redux";
 import { Grid } from "semantic-ui-react";
@@ -43,6 +44,11 @@ const actions = {
 class EventDetailedPage extends Component {
   async componentDidMount() {
     const { firestore, match } = this.props;
+    let event = await firestore.get(`events/${match.params.id}`);
+    if(!event.exists){
+      toastr.error('Not found', 'Event does not exist');
+      this.props.history.push('/error');
+    }
     await firestore.setListener(`events/${match.params.id}`);
     // let event = await firestore.get(`event/${match.params.id}`)
     // if(!event.exists){// if the user goes to a file instead of a 404  just send them to the events page.
