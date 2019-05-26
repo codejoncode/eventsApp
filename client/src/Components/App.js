@@ -11,7 +11,8 @@ import EventDetailedPage from "../Components/events/EventDetailed/EventDetailedP
 import HomePage from "./home/HomePage";
 import EventForm from "./events/EventForm/EventForm";
 import TestComponent from "./TestComponent";
-import ModalManager from '../Components/modals/ModalManager'
+import ModalManager from "../Components/modals/ModalManager";
+import { UserIsAuthenticated } from "../Components/auth/authWrapper";//Higher Ordered Component
 
 class App extends Component {
   render() {
@@ -26,20 +27,18 @@ class App extends Component {
           path="/(.+)"
           render={() => (
             <div>
-
               <NavBar />
               <Container className="main">
                 <Switch>
                   <Route path="/events" component={EventDashboard} />
-                  <Route  path ="/test" component = {TestComponent} />
+                  <Route path="/test" component={TestComponent} />
                   <Route path="/event/:id" component={EventDetailedPage} />
-                  <Route path= "/manage/:id" component = {EventForm} />
-                  <Route path="/people" component={PeopleDashboard} />
-                  <Route path="/profile/:id" component={UserDetailedPage} />
-                  <Route path="/settings" component={SettingsDashboard} />
-                  <Route path="/createEvent" component={EventForm} />
-                  <Route path="/:id"  component = {HomePage} />
-                  
+                  <Route path="/manage/:id" component={UserIsAuthenticated(EventForm)} />
+                  <Route path="/people" component={UserIsAuthenticated(PeopleDashboard)} />
+                  <Route path="/profile/:id" component={UserIsAuthenticated(UserDetailedPage)} />
+                  <Route path="/settings" component={UserIsAuthenticated(SettingsDashboard)} />
+                  <Route path="/createEvent" component={UserIsAuthenticated(EventForm)} />
+                  <Route path="/:id" component={HomePage} />
                 </Switch>
               </Container>
             </div>

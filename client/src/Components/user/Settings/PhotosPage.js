@@ -84,7 +84,7 @@ class PhotosPage extends Component {
         this.state.image,
         this.state.fileName
       );
-      this.cancelCrop(); // remove preview once upload successful
+      await this.cancelCrop(); // remove preview once upload successful
       toastr.success("Success!", "Photo Uploaded!");
     } catch (error) {
       toastr.error("Oops", error.message);
@@ -93,7 +93,7 @@ class PhotosPage extends Component {
 
   handlePhotoDelete = photo => async () => {
     try {
-      this.props.deletePhoto(photo);
+      await this.props.deletePhoto(photo);
       toastr.success("Success", "Photo deleted!");
     } catch (error) {
       toastr.error("Oops", error.message);

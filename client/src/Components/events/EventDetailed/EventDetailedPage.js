@@ -10,6 +10,8 @@ import EventDetailedSidebar from "./EventDetailedSidebar";
 import { objectToArray, createDataTree } from "../../common/util/helpers";
 import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 import { addEventComment } from "../EventList/eventActions";
+import { openModal } from '../../modals/modalActions'
+
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
 const mapState = (state, ownProps) => {
   let event = {}; // an empty event will not thrown an error.
@@ -34,7 +36,8 @@ const mapState = (state, ownProps) => {
 const actions = {
   goingToEvent,
   cancelGoingToEvent,
-  addEventComment
+  addEventComment,
+  openModal
 };
 
 class EventDetailedPage extends Component {
@@ -54,6 +57,7 @@ class EventDetailedPage extends Component {
 
   render() {
     const {
+      openModal,
       event,
       auth,
       goingToEvent,
@@ -67,6 +71,7 @@ class EventDetailedPage extends Component {
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat); // turns the data into a tree where parents will have children (replies)
+    const authenticated = auth.isLoaded && !auth.isEmpty;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -77,13 +82,16 @@ class EventDetailedPage extends Component {
             isGoing={isGoing}
             goingToEvent={goingToEvent}
             cancelGoingToEvent={cancelGoingToEvent}
+            authenticated = {authenticated}
+            openModal = {openModal}
           />
           <EventDetailedInfo event={event} />
+          {authenticated && 
           <EventDetailedChat
             eventChat={chatTree}
             addEventComment={addEventComment}
             eventId={event.id}
-          />
+          />}
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />
