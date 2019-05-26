@@ -76,6 +76,7 @@ const EventDetailedHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoing
               Manage Event
             </Button>
           )}
+          
         </Segment>
       </Segment.Group>
     </div>

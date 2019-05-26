@@ -115,8 +115,6 @@ export const setMainPhoto = photo => async (
   dispatch(asyncActionStart());
   const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
-  console.log("show user object from auth");
-  console.log(user);
   const today = new Date(Date.now());
   let userDocRef = firestore.collection("users").doc(user.uid);
   let eventAttendeeRef = firestore.collection("event_attendee");
@@ -150,7 +148,6 @@ export const setMainPhoto = photo => async (
       }
     }
 
-    console.log(batch);
     await batch.commit();
     dispatch(asyncActionFinish());
   } catch (error) {
@@ -164,8 +161,6 @@ export const goingToEvent = event => async (dispatch, getState) => {
   dispatch(asyncActionStart());
   const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
-  console.log("check out user");
-  console.log(user);
   const photoURL = getState().firebase.profile.photoURL;
   const displayName = getState().firebase.profile.displayName;
   const attendee = {
@@ -308,11 +303,9 @@ export const followUser = userToFollow => async (
 };
 
 export const unfollowUser = userToUnfollow =>
-  // console.log(userToUnfollow)
   async (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     const user = firestore.auth().currentUser;
-    console.log(user);
     try {
       await firestore.delete({
         collection: "users",

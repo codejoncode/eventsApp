@@ -47,7 +47,6 @@ const actions = {
 
 class UserDetailedPage extends Component {
   async componentDidMount() {
-    // console.log(this.props.userUid) // received
     await this.props.getUserEvents(this.props.userUid);
   }
 
@@ -69,8 +68,7 @@ class UserDetailedPage extends Component {
     } = this.props; //requesting
     const isCurrentUser = auth.uid === match.params.id;
     const isFollowing = !isEmpty(following);
-    console.log(following)
-    console.log(this.props.match.params.id)
+    
     // console.log(requesting);
     // const loading = Object.values(requesting).some(a => a === true);
 

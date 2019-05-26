@@ -4,6 +4,8 @@ import {
   COUNTER_ACTION_STARTED,
   COUNTER_ACTION_FINISHED
 } from "./testConstants";
+import firebase from '../../config/firebase';
+
 
 export const incrementCounter = () => {
   return {
@@ -50,3 +52,17 @@ export const decrementAsync = () => {
         dispatch(finishCounterAction())
     }
 };
+
+/*Should make sure that a user cannot update another users profile */
+export const testPermission = () => 
+  async (dispatch, getState) => {
+    const firestore = firebase.firestore(); 
+    try {
+      let userDocRef = await firestore.collection('users').doc('dMmLUV1CQpXvrKAivrQ27gCdgYg2');
+      userDocRef.update({
+        displayName: 'testing'
+      })
+    } catch (error){
+      console.log(error)
+    }
+  }
