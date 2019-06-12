@@ -12,6 +12,7 @@ import { objectToArray, createDataTree } from "../../common/util/helpers";
 import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 import { addEventComment } from "../EventList/eventActions";
 import { openModal } from '../../modals/modalActions'
+import LoadingComponent from '../../layout/LoadingComponent';
 
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
 const mapState = (state, ownProps) => {
@@ -27,6 +28,7 @@ const mapState = (state, ownProps) => {
   }
 
   return {
+    requesting: state.firestore.status.requesting,
     event,
     auth: state.firebase.auth,
     eventChat,
@@ -42,6 +44,11 @@ const actions = {
 };
 
 class EventDetailedPage extends Component {
+
+  state = {
+    initialLoading : true
+  }
+
   async componentDidMount() {
     const { firestore, match } = this.props;
     let event = await firestore.get(`events/${match.params.id}`);
@@ -50,11 +57,9 @@ class EventDetailedPage extends Component {
       this.props.history.push('/error');
     }
     await firestore.setListener(`events/${match.params.id}`);
-    // let event = await firestore.get(`event/${match.params.id}`)
-    // if(!event.exists){// if the user goes to a file instead of a 404  just send them to the events page.
-    //   history.push('/events');
-    //   toastr.error('Sorry', "Event not found")
-    // }
+    this.setState({
+      initialLoading: false
+    })
   }
   async componentWillUnmount() {
     const { firestore, match } = this.props;
@@ -70,14 +75,20 @@ class EventDetailedPage extends Component {
       cancelGoingToEvent,
       addEventComment,
       eventChat,
-      loading
+      loading,
+      requesting,
+      match,
     } = this.props;
     const attendees =
-      event && event.attendees && objectToArray(event.attendees);
+      event && event.attendees && objectToArray(event.attendees).sort(function(a,b) {
+        return a.joinDate - b.joinDate; //order the people going to an event by their joinDate this will keep the host at the top. 
+      });
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat); // turns the data into a tree where parents will have children (replies)
     const authenticated = auth.isLoaded && !auth.isEmpty;
+    const loadingEvent = requesting[`events/${match.params.id}`];
+    if (loadingEvent || this.state.initialLoading) return <LoadingComponent inverted={true}/>
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -113,5 +124,5 @@ export default compose(
     mapState,
     actions
   ),
-  firebaseConnect(props => [`event_chat/${props.match.params.id}`])
+  firebaseConnect(props => props.auth.isLoaded && !props.auth.isEmpty && [`event_chat/${props.match.params.id}`])
 )(EventDetailedPage);

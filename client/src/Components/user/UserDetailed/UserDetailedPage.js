@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toastr } from 'react-redux-toastr'
 import { firestoreConnect, isEmpty } from "react-redux-firebase";
 import { compose } from "redux";
 import { Grid, Segment } from "semantic-ui-react";
@@ -10,7 +11,7 @@ import UserDetailedPhotos from "./UserDetailedPhotos";
 import UserDetailedEvents from "./UserDetailedEvents";
 import { userDetailedQuery } from "../userQueries";
 import UserDetailedSidebar from "./UserDetailedSidebar";
-// import LoadingComponent from '../../layout/LoadingComponent';
+import LoadingComponent from '../../layout/LoadingComponent';
 import { getUserEvents, followUser, unfollowUser } from "../userActions";
 
 const mapState = (state, ownProps) => {
@@ -47,6 +48,11 @@ const actions = {
 
 class UserDetailedPage extends Component {
   async componentDidMount() {
+    let user = await this.props.firestore.get(`users/${this.props.match.params.id}`); 
+    if(!user.exists){
+      toastr.error('Not Found', "User doesn't exist")
+      this.props.history.push('/error');
+    }
     await this.props.getUserEvents(this.props.userUid);
   }
 
@@ -65,14 +71,15 @@ class UserDetailedPage extends Component {
       followUser,
       following, 
       unfollowUser,
-    } = this.props; //requesting
+      requesting
+    } = this.props; 
     const isCurrentUser = auth.uid === match.params.id;
     const isFollowing = !isEmpty(following);
     
-    // console.log(requesting);
-    // const loading = Object.values(requesting).some(a => a === true);
+    
+    const loading = requesting[`users/${match.params.id}`]
 
-    // if ( loading ) return <LoadingComponent  inverted={true}/>
+    if ( loading ) return <LoadingComponent  inverted={true}/>
 
     return (
       <Grid>

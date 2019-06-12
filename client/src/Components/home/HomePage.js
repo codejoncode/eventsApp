@@ -1,20 +1,32 @@
 import React from "react";
 import logo from "../../Images/users.png";
+import LandingPage from "../../Images/2.jpg";
 
 //stateless functional component
 const HomePage = ({history}) => {
+  // style ={{backgroundImage: `url(${LandingPage}) !important`, backgroundSize: "cover !important"}}
   return (
-    <div>
-      <div className="ui inverted vertical masthead center aligned segment">
-        <div className="ui text container">
+    <div >
+      <div  id = "landingPage" className="ui inverted vertical masthead center aligned segment" >
+        <div className="ui text container" >
           <h1 className="ui inverted stackable header">
-            <img
+            {/* <img
               className="ui image massive"
               src={logo}
               alt="logo"
             />
-            <div className="content">Re-vents</div>
+            <div className="content">Re-vents</div> */}
           </h1>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
           <h2>Do whatever you want to do</h2>
           <div onClick = {() => history.push('/events')} className="ui huge white inverted button">
             Get Started
@@ -23,21 +35,8 @@ const HomePage = ({history}) => {
         </div>
       </div>
       <div style={{ textAlign: "center" }}>
-        Icons made by{" "}
-        <a href="http://www.freepik.com" title="Freepik">
-          Freepik
-        </a>{" "}
-        from{" "}
-        <a href="https://www.flaticon.com/" title="Flaticon">
-          www.flaticon.com
-        </a>{" "}
-        is licensed by{" "}
-        <a
-          href="http://creativecommons.org/licenses/by/3.0/"
-          title="Creative Commons BY 3.0"
-        >
-          CC 3.0 BY
-        </a>
+        &copy; 2019 Fleek Session {" "}
+        
       </div>
     </div>
   );
