@@ -33,7 +33,7 @@ const mapState = (state, ownProps) => {
     profile,
     photos: state.firestore.ordered.photos,
     requesting: state.firestore.status.requesting,
-    events: state.events.events,
+    events: state.events.userEvents,
     eventsLoading: state.async.loading,
     following: state.firestore.ordered.following,
     loading : state.async.loading,

@@ -17,12 +17,14 @@ const query = [
   }
 ]
 
-const mapState = state => ({
-  events: state.events,
+const mapState = state => {
+  return({
+  events: state.events.events,
   loading: state.async.loading, 
   activities: state.firestore.ordered.activity
  
 });
+}
 
 const actions = {
   getEventsForDashboard

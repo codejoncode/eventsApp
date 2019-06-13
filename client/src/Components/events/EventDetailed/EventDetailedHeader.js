@@ -65,6 +65,7 @@ const EventDetailedHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoing
 
               {!authenticated && !event.cancelled &&
                 <Button loading={loading} onClick = {() => openModal('UnauthModal')} color="teal">JOIN THIS EVENT</Button>}
+               
             </div>
           )}
           {event.cancelled && !isHost &&

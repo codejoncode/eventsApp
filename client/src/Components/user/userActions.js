@@ -2,7 +2,7 @@ import moment from "moment";
 import { toastr } from "react-redux-toastr";
 import firebase from "../../config/firebase";
 import cuid from "cuid";
-import { FETCH_EVENTS } from "../events/EventList/eventConstants";
+import { FETCH_USER_EVENTS } from "../events/EventList/eventConstants";
 import {
   asyncActionError,
   asyncActionFinish,
@@ -266,7 +266,7 @@ export const getUserEvents = (useruid, activeTab) => async (
       events.push({ ...evt.data(), id: evt.id });
     }
 
-    dispatch({ type: FETCH_EVENTS, payload: { events } });
+    dispatch({ type: FETCH_USER_EVENTS, payload: events  });
 
     dispatch(asyncActionFinish());
   } catch (error) {
