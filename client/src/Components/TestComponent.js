@@ -103,7 +103,7 @@ class TestComponent extends Component {
         let eventDocRef = await firestore.collection('events').doc('DELETEME');
         try {
           await eventDocRef.update({
-            [`attendees.455ZrcNYOCY2AwRDlJidBju368M2`]: firebase.firestore.FieldValue.delete()
+            [`attendees.cEEFBRyUnAP6qU22mmJNFvGZEed2`]: firebase.firestore.FieldValue.delete()
           });
           toastr.success('Success')
         } catch (error) {
@@ -118,7 +118,7 @@ class TestComponent extends Component {
         let eventDocRef = await firestore.collection('events').doc('DELETEME');
         try {
           await eventDocRef.update({
-            [`attendees.455ZrcNYOCY2AwRDlJidBju368M2.photoURL`]: 'testing123.jpg'
+            [`attendees.cEEFBRyUnAP6qU22mmJNFvGZEed2.photoURL`]: 'testing123.jpg'
           });
           toastr.success('Success')
         } catch (error) {
