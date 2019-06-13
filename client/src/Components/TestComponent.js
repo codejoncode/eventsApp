@@ -5,6 +5,8 @@ import {incrementAsync, decrementAsync, testPermission} from '../Components/test
 import Script from 'react-load-script'; 
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { openModal} from "../Components/modals/modalActions";
+import { toastr } from 'react-redux-toastr';
+import firebase from '../config/firebase'
 const mapStateToProps = (state) => ({
     data: state.test.data,
     loading: state.test.loading
@@ -48,6 +50,83 @@ class TestComponent extends Component {
     handleScriptLoaded = () => {
         this.setState({scriptLoaded: true})
     }
+
+      handleTestUpdateProfile = async () => {
+        const firestore = firebase.firestore();
+        // doc = diana's userUid
+        let userDocRef = await firestore
+          .collection('users')
+          .doc('cEEFBRyUnAP6qU22mmJNFvGZEed2');
+        try {
+          await userDocRef.update({ displayName: 'testing' });
+          toastr.success('Success')
+        } catch (error) {
+          console.log(error);
+          toastr.error('Computer says no')
+        }
+      };
+    
+      handleCreateTestEvent = async () => {
+        const firestore = firebase.firestore();
+        let eventDocRef = await firestore.collection('events').doc('DELETEME');
+        try {
+          await eventDocRef.set({
+            title: 'DELETEME'
+          });
+          toastr.success('Success')
+        } catch (error) {
+          console.log(error);
+          toastr.error('Computer says no')
+        }
+      };
+    
+      handleTestJoinEvent = async () => {
+        const firestore = firebase.firestore();
+        let eventDocRef = await firestore.collection('events').doc('DELETEME');
+        const attendee = {
+          photoURL: '/assets/user.png',
+          displayName: 'Testing'
+        };
+        try {
+          await eventDocRef.update({
+            [`attendees.cEEFBRyUnAP6qU22mmJNFvGZEed2`]: attendee
+          });
+          toastr.success('Success')
+        } catch (error) {
+          console.log(error);
+          toastr.error('Computer says no')
+        }
+      };
+    
+      handleTestCancelGoingToEvent = async () => {
+        const firestore = firebase.firestore();
+        let eventDocRef = await firestore.collection('events').doc('DELETEME');
+        try {
+          await eventDocRef.update({
+            [`attendees.455ZrcNYOCY2AwRDlJidBju368M2`]: firebase.firestore.FieldValue.delete()
+          });
+          toastr.success('Success')
+        } catch (error) {
+          console.log(error);
+          toastr.error('Computer says no')
+        }
+    
+      };
+    
+      handleTestChangeAttendeePhotoInEvent = async () => {
+        const firestore = firebase.firestore();
+        let eventDocRef = await firestore.collection('events').doc('DELETEME');
+        try {
+          await eventDocRef.update({
+            [`attendees.455ZrcNYOCY2AwRDlJidBju368M2.photoURL`]: 'testing123.jpg'
+          });
+          toastr.success('Success')
+        } catch (error) {
+          console.log(error);
+          toastr.error('Computer says no')
+        }
+      };
+
     render () {
         const inputProps = {
             value: this.state.address,
