@@ -49,9 +49,9 @@ class NavBar extends Component {
           {(authenticated  || !authenticated) && 
             <Menu.Item as={NavLink} to="/people" name="People" />
           }
-          {(authenticated  || !authenticated) && 
+          {/* {(authenticated  || !authenticated) && 
             <Menu.Item as={NavLink} to="/test" name="Test" />
-          }
+          } */}
           {authenticated &&
           <Menu.Item>
             <Button

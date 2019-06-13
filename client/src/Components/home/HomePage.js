@@ -1,6 +1,5 @@
 import React from "react";
-import logo from "../../Images/users.png";
-import LandingPage from "../../Images/2.jpg";
+
 
 //stateless functional component
 const HomePage = ({history}) => {
