@@ -186,25 +186,25 @@ class TestComponent extends Component {
           onClick={this.handleTestUpdateProfile}
           color="orange"
           fluid
-          content="Test update dianas profile - should fail if anon/not diana - should succeed if diana"
+          content="Test update jonathans profile - should fail if anon/not jonathan - should succeed if jonathan"
         />
         <Button
           onClick={this.handleTestJoinEvent}
           color="olive"
           fluid
-          content="Test joining an event - should fail if anon/not diana - should succeed if diana"
+          content="Test joining an event - should fail if anon/not jonathan - should succeed if jonathan"
         />
         <Button
           onClick={this.handleTestCancelGoingToEvent}
           color="purple"
           fluid
-          content="Test cancelling attendance to an event - should fail if anon/not diana - should succeed if diana"
+          content="Test cancelling attendance to an event - should fail if anon/not jonathan - should succeed if jonathan"
         />
         <Button
           onClick={this.handleTestChangeAttendeePhotoInEvent}
           color="violet"
           fluid
-          content="Test changing photo for event attendee - should fail if anon/not diana - should succeed if diana"
+          content="Test changing photo for event attendee - should fail if anon/not jonathan - should succeed if jonathan"
         />
         <br />
         <br />
