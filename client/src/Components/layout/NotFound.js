@@ -1,9 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { Segment, Button, Header, Icon } from 'semantic-ui-react';
 
 const NotFound = ({ history }) => {
   return (
-    <Segment placeholder>
+    <Segment>
       <Header icon>
         <Icon name='search' />
         Oops - we've looked everywhere but couldn't find this.
@@ -17,5 +18,5 @@ const NotFound = ({ history }) => {
   );
 };
 
-export default NotFound;
+export default withRouter(NotFound);
 

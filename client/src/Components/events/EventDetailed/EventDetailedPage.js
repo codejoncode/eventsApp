@@ -13,6 +13,7 @@ import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 import { addEventComment } from "../EventList/eventActions";
 import { openModal } from '../../modals/modalActions'
 import LoadingComponent from '../../layout/LoadingComponent';
+import NotFound from "../../layout/NotFound";
 
 /* Because rooter properites are attched to the component as its own properities and not something we get from the store we can pass in a second property*/
 const mapState = (state, ownProps) => {
@@ -49,7 +50,15 @@ class EventDetailedPage extends Component {
     initialLoading : true
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.setListener();
+  }
+  componentWillUnmount() {
+      this.unsetListener();
+
+  }
+
+  setListener = async () => {
     const { firestore, match } = this.props;
     let event = await firestore.get(`events/${match.params.id}`);
     if(!event.exists){
@@ -61,7 +70,8 @@ class EventDetailedPage extends Component {
       initialLoading: false
     })
   }
-  async componentWillUnmount() {
+
+  unsetListener = async () => {
     const { firestore, match } = this.props;
     await firestore.unsetListener(`events/${match.params.id}`);
   }
@@ -89,6 +99,9 @@ class EventDetailedPage extends Component {
     const authenticated = auth.isLoaded && !auth.isEmpty;
     const loadingEvent = requesting[`events/${match.params.id}`];
     if (loadingEvent || this.state.initialLoading) return <LoadingComponent inverted={true}/>
+
+    if (Object.keys(event).length === 0) return <NotFound />
+    
     return (
       <Grid>
         <Grid.Column width={10}>
